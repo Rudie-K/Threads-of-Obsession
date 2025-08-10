@@ -1,0 +1,1861 @@
+:: StoryTitle
+Threads of Obsession
+
+
+:: StoryData
+{
+  "ifid": "A529D8ED-8FE3-4AD5-8B8C-D4855BD66728",
+  "format": "SugarCube",
+  "format-version": "2.37.3",
+  "start": "Start",
+  "zoom": 1
+}
+
+
+:: Get Ready {"position":"375,150","size":"100,100"}
+
+You finish the form just in time to realise you're going to be late, and you look... well, plain awful.
+
+Your wardrobe is mostly thrifted college castoffs and hand-me-downs. Nothing screams "boutique employee"—or even "employable human."
+
+
+You could [[beg your roommate for fashion money (and owe them)->RoommateHelp]] 
+
+Or [[dig through the mess and style something from your graveyard closet->Wardrobe]]
+
+
+:: RoommateHelp {"position":"300,275","size":"100,100"}
+
+
+
+:: Start {"position":"250,150","size":"100,100"}
+
+You wake up face-down in your sketchbook, last nights graphic design ruined by makeup smears and drool. 
+
+The studio apartment smells like your roommates eggs again and the room divider doesn't block out the ambient screaming they play to fall asleep.
+
+Your phone buzzes like it's mad at you. You squint at the blinding screen:
+
+**TODAY: INTERVIEW – 10:00 AM**
+
+Below it: “Don’t forget the paperwork! Ms. Matel *insists* on pen and paper. Retro vibes or whatever.”
+
+Your heart sinks.
+
+You never filled out the form!
+
+<<link "Fill Form">>
+    <<run showFormModal()>>
+<</link>>
+
+	**Test Links
+[[Wardrobe]] 
+
+
+:: StoryInit {"position":"250,25","size":"100,100"}
+\:: StoryInit
+<<set $time to "09:30">>
+<<set $money to 25>>
+<<set $reputation to "Washed-up Artist">>
+<<set $name to "">>
+<<set $birthday to "">>
+<<set $gender to "">>
+<<set $currency to "£">>
+
+
+:: StoryInterface [interface] {"position":"50,150","size":"100,100"}
+<div id="game-container">
+  <div id="sidebar">
+    <div id="sidebar-image-container">
+      <img id="sidebar-image" src="C:\Users\User\Downloads\map.jpg" alt="Location background">
+    </div>
+    <div id="sidebar-content">
+      <div id="stats-calendar-row">
+        <div id="player-stats">
+          <div class="stat-row">
+            <span class="stat-value digital-time" id="player-time"></span>
+            <span class="stat-label money-label">Money:</span>
+            <span class="stat-value" id="player-money"></span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Reputation:</span>
+            <span class="stat-value" id="player-reputation"></span>
+          </div>
+        </div>
+        <div id="calendar-container"></div>
+      </div>
+    </div>
+    <div id="sidebar-footer">
+      <div id="sidebar-options">
+        <button id="options-button">Options</button>
+      </div>
+      <div id="sidebar-buttons">
+        <button id="save-button">Save</button>
+        <button id="load-button">Load</button>
+      </div>
+    </div>
+  </div>
+  <div id="main-panel">
+    <div id="passages"></div>
+  </div>
+</div>
+<!-- Modal container, always present: -->
+<div id="form-modal" style="display:none;"></div>
+
+
+:: Wardrobe {"position":"450,275","size":"100,100"}
+
+
+
+:: StoryScript [script]
+// ---- DYNAMIC STATS INJECTION ----
+function updateStats() {
+    const vars = State.variables;
+    $('#player-time').text(vars.time || "00:00");
+    $('#player-money').text(
+        (vars.currency ? vars.currency : "£") +
+        (vars.money !== undefined ? vars.money : "0")
+    );
+    $('#player-reputation').text(vars.reputation || "");
+}
+
+// Button functionality
+$(document).on('click', '#save-button', function () {
+    Save.slots.save();
+});
+$(document).on('click', '#load-button', function () {
+    Dialog.open('load');
+});
+
+// Calendar grid
+function renderSidebarCalendar(month = null) {
+    const weekDays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const today = new Date();
+    const currentMonth = month !== null ? month : today.getMonth();
+    const currentYear = today.getFullYear();
+    const firstDay = new Date(currentYear, currentMonth, 1);
+    const lastDay = new Date(currentYear, currentMonth + 1, 0);
+
+    let html = `<div id="calendar-month-label">${firstDay.toLocaleString('default', { month: 'long' })}</div>`;
+    html += `<div id="calendar-grid">`;
+
+    for(let wd of weekDays){
+        html += `<div class="calendar-day-header">${wd}</div>`;
+    }
+    for(let i=0; i<firstDay.getDay(); i++){
+        html += `<div></div>`;
+    }
+    for(let d=1; d<=lastDay.getDate(); d++){
+        html += `<div class="calendar-day" data-day="${d}">${d}</div>`;
+    }
+    html += `</div>`;
+
+    $('#calendar-container').html(html);
+
+    $('#calendar-grid').on('click', '.calendar-day', function(){
+        const selectedDay = $(this).data('day');
+        UI.alert(`You clicked day ${selectedDay}`);
+    });
+
+    if (today.getMonth() === currentMonth) {
+        $(`.calendar-day[data-day="${today.getDate()}"]`).addClass('selected');
+    }
+}
+
+// ---- ORIGINAL MODAL FORM LOGIC ----
+const applicantEducation = [
+  "High School Dropout",
+  "Self-Taught at Tubeiversity",
+  "B.S. in Fine Art, Not Your University (NYU)"
+];
+
+const applicantWork = [
+  "Milk Foam Artist (Barista)",
+  "Customer Service Consultant, That Guy™ Call Centre",
+  "Founder & CEO, @PostPostModern (Etsy)",
+  "Creative Director, @ChicInTheory (Etsy)",
+  "Freelance Illustrator"
+];
+
+// Helper function to convert DD/MM input to Date object
+function parseDDMMDate(dateStr) {
+	if (!dateStr) return null;
+	const parts = dateStr.split('/');
+	if (parts.length !== 2) return null;
+	
+	const day = parseInt(parts[0], 10);
+	const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed in Date
+	const currentYear = new Date().getFullYear();
+	
+	return new Date(currentYear, month, day);
+}
+
+// Helper function to convert Date to DD/MM format
+function formatDateToDDMM(date) {
+	if (!date) return '';
+	const day = date.getDate().toString().padStart(2, '0');
+	const month = (date.getMonth() + 1).toString().padStart(2, '0');
+	return `${day}/${month}`;
+}
+
+window.showFormModal = function() {
+	console.log("🔧 Opening original job application form");
+	
+	const educationHtml = applicantEducation.map(line => `<p>${line}</p>`).join("");
+	const workHtml = `<ul>${applicantWork.map(line => `<li>${line}</li>`).join("")}</ul>`;
+
+	const modalHtml = `
+		<div class="modal-content two-col">
+			<div class="form-col">
+				<h2>Job Application Form</h2>
+				<label for="form-name">Name:<br>
+					<input type="text" id="form-name" placeholder="Ava Example" autocomplete="name" />
+				</label><br>
+				<label for="form-birthday">Birthday (DD/MM):<br>
+					<input type="text" id="form-birthday" placeholder="DD/MM" maxlength="5" pattern="^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])$" />
+				</label><br>
+				<label for="form-gender">Gender:<br>
+					<select id="form-gender">
+						<option value="non-binary">Non-binary</option>
+						<option value="woman">Woman</option>
+                        <option value="man">Man</option>
+					</select>
+				</label><br>
+				<label for="form-currency">Currency:<br>
+					<select id="form-currency">
+						<option value="£">Pounds (£)</option>
+						<option value="$">Dollars ($)</option>
+						<option value="€">Euros (€)</option>
+					</select>
+				</label><br>
+				<button id="form-submit">Submit</button>
+			</div>
+			<div class="info-col">
+				<div class="form-section">
+					<h3>Educational Background</h3>
+					${educationHtml}
+				</div>
+				<div class="form-section">
+					<h3>Work Experience</h3>
+					${workHtml}
+				</div>
+				<div class="form-section">
+					<h3>Portfolio</h3>
+					<label for="form-artschool">Art School Background:<br>
+						<select id="form-artschool">
+							<option value="" disabled selected>Select one</option>
+							<option value="Textiles">Textiles</option>
+							<option value="Sculpting">Sculpting</option>
+							<option value="Modeling">Modeling</option>
+							<option value="Performance Art">Performance Art</option>
+							<option value="Digital Illustration">Digital Illustration</option>
+							<option value="Curation">Curation</option>
+							<option value="Mixed Media">Mixed Media</option>
+							<option value="Photography">Photography</option>
+							<option value="Painting">Painting</option>
+							<option value="Graphic Design">Graphic Design</option>
+						</select>
+					</label><br>
+					<label for="form-artstyle">Style:<br>
+						<select id="form-artstyle">
+							<option value="" disabled selected>Select one</option>
+							<option value="Suavecore">Suavecore</option>
+							<option value="Grunge Grandma">Grunge Grandma</option>
+							<option value="Battlefield Couture">Battlefield Couture</option>
+							<option value="Luxe Deluxe">Luxe Deluxe</option>
+							<option value="Pastel Dictator">Pastel Dictator</option>
+							<option value="Corporeal Fluid">Corporeal Fluid</option>
+							<option value="Just Found This">Just Found This</option>
+							<option value="Y2K Royale">Y2K Royale</option>
+							<option value="Corporate Sleaze">Corporate Sleaze</option>
+							<option value="Tumblrcore">Tumblrcore</option>
+							<option value="Nu-Rave Redux">Nu-Rave Redux</option>
+							<option value="Drama Kitsch">Drama Kitsch</option>
+						</select>
+					</label>
+				</div>
+			</div>
+		</div>
+	`;
+	
+	$("#form-modal").html(modalHtml).css("display", "flex");
+
+	// Add input validation for DD/MM format
+	$("#form-birthday").on("input", function() {
+		let value = $(this).val().replace(/[^\d]/g, ''); // Remove non-digits
+		
+		// Auto-add slash after day
+		if (value.length >= 2) {
+			value = value.substring(0, 2) + '/' + value.substring(2, 4);
+		}
+		
+		$(this).val(value);
+	});
+
+	$("#form-submit").on("click", function() {
+		const name = $("#form-name").val().trim();
+		const birthdayInput = $("#form-birthday").val().trim();
+		const gender = $("#form-gender").val();
+		const currency = $("#form-currency").val();
+		const artschool = $("#form-artschool").val();
+		const artstyle = $("#form-artstyle").val();
+
+		if (!name || !birthdayInput || !artschool || !artstyle) {
+			UI.alert("Please complete all required fields.");
+			return;
+		}
+
+		// Validate DD/MM format
+		const datePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])$/;
+		if (!datePattern.test(birthdayInput)) {
+			UI.alert("Please enter birthday in DD/MM format (e.g., 25/12).");
+			return;
+		}
+
+		// Parse the date to ensure it's valid
+		const parsedDate = parseDDMMDate(birthdayInput);
+		if (!parsedDate || isNaN(parsedDate.getTime())) {
+			UI.alert("Please enter a valid date in DD/MM format.");
+			return;
+		}
+
+		State.variables.name = name;
+		State.variables.birthday = birthdayInput; // Store in DD/MM format
+		State.variables.gender = gender;
+		State.variables.currency = currency;
+		State.variables.artschool = artschool;
+		State.variables.artstyle = artstyle;
+
+		console.log("🔧 Character data saved from job application:", {
+			name, birthday: birthdayInput, gender, currency, artschool, artstyle
+		});
+
+		$("#form-modal").hide();
+		Engine.play("Get Ready");
+	});
+	
+	console.log("🔧 Job application form opened successfully");
+};
+
+// ---- IMPROVED PASSAGE DETECTION ----
+function getCurrentPassageTitle() {
+    if (typeof State !== "undefined" && State.passage && State.passage.title) {
+        return State.passage.title;
+    }
+    
+    if (typeof passage !== "undefined" && passage && passage.title) {
+        return passage.title;
+    }
+    
+    if (typeof Engine !== "undefined" && Engine.state && Engine.state.active && Engine.state.active.title) {
+        return Engine.state.active.title;
+    }
+    
+    const activePassage = $('tw-passage[data-passage]');
+    if (activePassage.length > 0) {
+        return activePassage.attr('data-passage');
+    }
+    
+    if (typeof State !== "undefined" && State.history && State.history.length > 0) {
+        const lastEntry = State.history[State.history.length - 1];
+        if (lastEntry && lastEntry.title) {
+            return lastEntry.title;
+        }
+    }
+    
+    return "UNKNOWN";
+}
+
+// ---- WARDROBE AVATAR SYSTEM ----
+let avatarState = {
+    zoom: 1.0,
+    rotation: 0,
+    currentOutfit: {
+        inner: "bralette",
+        tops: "t-shirt", 
+        outer: null,
+        bottoms: "jeans",
+        skirts: null,
+        dress: null,
+        hosiery: null,
+        shoes: "ballet-flats",
+        accessories: {}
+    }
+};
+
+// Avatar display update function
+function updateAvatarDisplay() {
+    console.log("🔄 Updating avatar display with current outfit:", avatarState.currentOutfit);
+    
+    // Update the avatar character display
+    const avatarCharacter = $("#avatar-character");
+    if (avatarCharacter.length > 0) {
+        // Apply current transform and outfit changes
+        avatarCharacter.css({
+            "transform": `scale(${avatarState.zoom}) rotate(${avatarState.rotation}deg)`,
+            "filter": "drop-shadow(2px 2px 4px rgba(164, 68, 110, 0.3))"
+        });
+        
+        // Add a subtle pulse effect to show something changed
+        avatarCharacter.animate({
+            opacity: 0.7
+        }, 100).animate({
+            opacity: 1
+        }, 100);
+    }
+    
+    console.log("✅ Avatar display updated");
+}
+
+function renderWardrobeSidebar() {
+    console.log("🎨 Rendering wardrobe sidebar");
+    
+    const imageContainer = $("#sidebar-image-container");
+    const sidebarContent = $("#sidebar-content");
+    const sidebarFooter = $("#sidebar-footer");
+    
+    if (imageContainer.length === 0 || sidebarContent.length === 0) {
+        console.error("Required elements not found!");
+        return;
+    }
+    
+    // Hide the location image
+    imageContainer.hide();
+    
+    // Create the wardrobe sidebar with clean avatar display
+    sidebarContent.html(`
+        <div id="avatar-sidebar-content" style="height: 100%; display: flex; flex-direction: column;">
+            <div id="avatar-container" style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 300px; background: #fffdfb; border-radius: 8px; margin-bottom: 0; border: 2px solid #e0ccd1; position: relative;">
+                <div id="avatar-display" style="width: 90%; height: 90%; display: flex; align-items: center; justify-content: center; transform: scale(${avatarState.zoom}) rotate(${avatarState.rotation}deg); transition: all 0.3s ease;">
+                    <div id="avatar-character" style="font-size: 6em; filter: drop-shadow(2px 2px 4px rgba(164, 68, 110, 0.3));">👤</div>
+                </div>
+            </div>
+            <div id="avatar-controls" style="display: flex; justify-content: center; gap: 0.5em; margin-bottom: 0.5em;">
+                <button id="zoom-in" title="Zoom In" style="background: #a4446e; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.2s ease;">+</button>
+                <button id="zoom-out" title="Zoom Out" style="background: #a4446e; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.2s ease;">−</button>
+                <button id="rotate-left" title="Rotate Left" style="background: #a4446e; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.2s ease;">↺</button>
+                <button id="rotate-right" title="Rotate Right" style="background: #a4446e; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.2s ease;">↻</button>
+            </div>
+        </div>
+    `);
+    
+    // Ensure the sidebar footer maintains exact same settings
+    if (sidebarFooter.length > 0) {
+        sidebarFooter.show().css({
+            'position': 'relative',
+            'display': 'block',
+            'margin-top': 'auto'
+        });
+        
+        if (sidebarFooter.find('#options-button').length === 0) {
+            sidebarFooter.html(`
+                <div id="sidebar-options">
+                    <button id="options-button">Options</button>
+                </div>
+                <div id="sidebar-buttons">
+                    <button id="save-button">Save</button>
+                    <button id="load-button">Load</button>
+                </div>
+            `);
+        }
+    }
+    
+    // Set up avatar controls AFTER creating the HTML
+    setTimeout(function() {
+        setupAvatarControls();
+        console.log("🎮 Avatar controls setup complete");
+    }, 100);
+    
+    // Inject wardrobe categories into main panel
+    injectWardrobeMainPanel();
+    
+    console.log("🎨 Clean wardrobe sidebar ready");
+}
+
+function injectWardrobeMainPanel() {
+    setTimeout(function() {
+        const mainPanel = $("#main-panel");
+        if (mainPanel.length === 0) {
+            console.error("Main panel not found for wardrobe categories");
+            return;
+        }
+        
+        const wardrobeMainContent = `
+    <style>
+        #main-panel {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        #wardrobe-main-content {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+        #wardrobe-categories {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+            margin-bottom: 0;
+        }
+        #clothing-options {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+        }
+        #category-buttons {
+            flex-shrink: 0;
+        }
+        .category-btn {
+            background: #fffdfb !important;
+            color: #a4446e !important;
+            text-decoration: none !important;
+        }
+        .category-btn:hover {
+            background: #d59ca6 !important;
+            color: white !important;
+            transform: scale(1.1);
+            text-decoration: none !important;
+        }
+        .side-btn {
+            background: #a4446e !important;
+            color: white !important;
+        }
+        .side-btn:hover {
+            background: #d59ca6 !important;
+            transform: none !important;
+        }
+        #toggle-filters:hover, #finish-outfit:hover {
+            transform: none !important;
+        }
+    </style>
+    <div id="wardrobe-main-content" style="max-width: 900px; margin: 0 auto; padding: 0; padding-top: 2em; padding-bottom: 2em;">
+                <div style="text-align: center; margin: 0; padding: 0; margin-bottom: 2em;">
+                    <h1 style="color: #a4446e; margin: 0; padding: 0; font-size: 2.5em;">Your Wardrobe</h1>
+                </div>
+                
+                <div id="wardrobe-categories" style="background: #fceef5; border-radius: 12px; border: 2px solid #e0ccd1; padding: 2em; box-shadow: 0 4px 12px rgba(224, 204, 209, 0.2);">
+                    
+                    <!-- Category Buttons Row with Side Buttons -->
+                    <div style="position: relative; margin-bottom: 1em;">
+                        
+                        <!-- ORIGINAL Category Buttons Layout - Unchanged -->
+                        <div id="category-buttons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4em;">
+                            <button class="category-btn" data-category="inner" title="Inner" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                👙
+                            </button>
+                            <button class="category-btn" data-category="tops" title="Tops" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                👕
+                            </button>
+                            <button class="category-btn" data-category="outer" title="Outer" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                🧥
+                            </button>
+                            <button class="category-btn" data-category="bottoms" title="Bottoms" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                👖
+                            </button>
+                            <button class="category-btn" data-category="skirts" title="Skirts" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                👗
+                            </button>
+                            <button class="category-btn" data-category="dress" title="Dress" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                👔
+                            </button>
+                            <button class="category-btn" data-category="hosiery" title="Hosiery" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                🧦
+                            </button>
+                            <button class="category-btn" data-category="shoes" title="Shoes" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                👠
+                            </button>
+                            <button class="category-btn" data-category="accessories" title="Accessories" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                ✨
+                            </button>
+                        </div>
+                        
+                        <!-- Filter Button - No icons, clean text -->
+                        <button id="toggle-filters" class="side-btn" style="position: absolute; left: 0; bottom: 0; background: #a4446e; color: white; border: none; border-radius: 8px; width: 80px; height: 30px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; display: flex; align-items: center; justify-content: center; text-decoration: none; transform: none;">
+                            Filters
+                        </button>
+                        
+                        <!-- Finish Button - No icons, clean text -->
+                        <button id="finish-outfit" class="side-btn" style="position: absolute; right: 0; bottom: 0; background: #a4446e; color: white; border: none; border-radius: 8px; width: 80px; height: 30px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; display: flex; align-items: center; justify-content: center; text-decoration: none; transform: none;">
+                            Finish
+                        </button>
+                    </div>
+                    
+                    <!-- Filter Panel with Silhouette Filter -->
+                    <div id="filter-panel" style="background: white; border: 2px solid #e0ccd1; border-radius: 8px; z-index: 100; display: none; margin-bottom: 1em; padding: 1em; box-shadow: 0 4px 12px rgba(164, 68, 110, 0.3);">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1em;">
+                            
+                            <!-- Style Filter -->
+                            <div>
+                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Style:</label>
+                                <select id="style-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
+                                    <option value="">All Styles</option>
+                                    <option value="luxury">Luxury</option>
+                                    <option value="edge">Edge</option>
+                                    <option value="minimal">Minimal</option>
+                                    <option value="vintage">Vintage</option>
+                                    <option value="cute">Cute</option>
+                                    <option value="tactical">Tactical</option>
+                                    <option value="synthetic">Synthetic</option>
+                                    <option value="homemade">Homemade</option>
+                                    <option value="suave">Suave</option>
+                                    <option value="sleek">Sleek</option>
+                                    <option value="fluid">Fluid</option>
+                                    <option value="retro">Retro</option>
+                                    <option value="avant-garde">Avant-garde</option>
+                                    <option value="y2k">Y2K</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Price Filter -->
+                            <div>
+                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Price:</label>
+                                <select id="price-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
+                                    <option value="">All Prices</option>
+                                    <option value="0-30">Under £30</option>
+                                    <option value="30-60">£30 - £60</option>
+                                    <option value="60-100">£60 - £100</option>
+                                    <option value="100-999">Over £100</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Brand Filter -->
+                            <div>
+                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Brand:</label>
+                                <select id="brand-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
+                                    <option value="">All Brands</option>
+                                    <option value="Delicate Dreams">Delicate Dreams</option>
+                                    <option value="Minimalist">Minimalist</option>
+                                    <option value="Luxe Label">Luxe Label</option>
+                                    <option value="ActiveFit">ActiveFit</option>
+                                    <option value="Essentials">Essentials</option>
+                                    <option value="Professional">Professional</option>
+                                    <option value="Cozy Co">Cozy Co</option>
+                                    <option value="Gothic Glam">Gothic Glam</option>
+                                    <option value="Timeless">Timeless</option>
+                                    <option value="Rebel Style">Rebel Style</option>
+                                    <option value="Executive">Executive</option>
+                                    <option value="Eastern Grace">Eastern Grace</option>
+                                    <option value="Vintage Vibes">Vintage Vibes</option>
+                                    <option value="UrbanOps">UrbanOps</option>
+                                    <option value="Retro Revival">Retro Revival</option>
+                                    <option value="Avant-Garde">Avant-Garde</option>
+                                    <option value="Sweet Style">Sweet Style</option>
+                                    <option value="Clean Lines">Clean Lines</option>
+                                    <option value="Glamour">Glamour</option>
+                                    <option value="Figure Fit">Figure Fit</option>
+                                    <option value="Y2K Revival">Y2K Revival</option>
+                                    <option value="Luxe Steps">Luxe Steps</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Silhouette Filter -->
+                            <div>
+                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Silhouette:</label>
+                                <select id="silhouette-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
+                                    <option value="">All Silhouettes</option>
+                                    <option value="bralette">Bralette</option>
+                                    <option value="bandeau">Bandeau</option>
+                                    <option value="camisole">Camisole</option>
+                                    <option value="sports-bra">Sports Bra</option>
+                                    <option value="t-shirt">T-Shirt</option>
+                                    <option value="blouse">Blouse</option>
+                                    <option value="sweater">Sweater</option>
+                                    <option value="corset">Corset</option>
+                                    <option value="trench-coat">Trench Coat</option>
+                                    <option value="leather-jacket">Leather Jacket</option>
+                                    <option value="blazer">Blazer</option>
+                                    <option value="kimono-jacket">Kimono Jacket</option>
+                                    <option value="jeans">Jeans</option>
+                                    <option value="dress-pants">Dress Pants</option>
+                                    <option value="cargo-pants">Cargo Pants</option>
+                                    <option value="leggings">Leggings</option>
+                                    <option value="pencil-skirt">Pencil Skirt</option>
+                                    <option value="circle-skirt">Circle Skirt</option>
+                                    <option value="asymmetrical-skirt">Asymmetrical Skirt</option>
+                                    <option value="pleated-skirt">Pleated Skirt</option>
+                                    <option value="shift-dress">Shift Dress</option>
+                                    <option value="wrap-dress">Wrap Dress</option>
+                                    <option value="cocktail-dress">Cocktail Dress</option>
+                                    <option value="bodycon-dress">Bodycon Dress</option>
+                                    <option value="thigh-highs">Thigh Highs</option>
+                                    <option value="fishnet-tights">Fishnet Tights</option>
+                                    <option value="knee-highs">Knee Highs</option>
+                                    <option value="bodystocking">Bodystocking</option>
+                                    <option value="stilettos">Stilettos</option>
+                                    <option value="combat-boots">Combat Boots</option>
+                                    <option value="ballet-flats">Ballet Flats</option>
+                                    <option value="platform-boots">Platform Boots</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Clear Filters -->
+                            <div style="display: flex; align-items: end;">
+                                <button id="clear-filters" style="background: #d59ca6; color: white; border: none; border-radius: 4px; padding: 0.4em 0.8em; cursor: pointer; font-size: 0.8em; width: 100%;">
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="clothing-options" style="min-height: 300px; background: white; border-radius: 8px; padding: 0 2em 2em 2em; border: 1px solid #e0ccd1; position: relative;">
+                        <div style="text-align: center; color: #999; font-size: 1.2em; padding: 3em 1em;">
+                            <div>Select a category above to view clothing options</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        const passageContent = mainPanel.find('tw-passage');
+        if (passageContent.length > 0) {
+            passageContent.append(wardrobeMainContent);
+        } else {
+            mainPanel.append(wardrobeMainContent);
+        }
+        
+        setupWardrobeMainPanelControls();
+        
+    }, 50);
+}
+
+function setupAvatarControls() {
+    console.log("🎮 Setting up avatar controls...");
+    
+    // Clear any existing handlers
+    $("#avatar-controls").off("click");
+    
+    // Check if buttons exist
+    const buttons = $("#avatar-controls button");
+    console.log("🔍 Found", buttons.length, "avatar control buttons");
+    buttons.each(function() {
+        console.log("🔍 Button ID:", $(this).attr("id"));
+    });
+    
+    $("#avatar-controls").on("click", "button", function(e) {
+        e.preventDefault();
+        const action = $(this).attr("id");
+        const button = $(this);
+        
+        console.log("🎮 Button clicked:", action, "Current zoom:", avatarState.zoom);
+        
+        // Visual feedback
+        button.css("transform", "scale(0.9)");
+        setTimeout(() => button.css("transform", "scale(1)"), 100);
+        
+        switch(action) {
+            case "zoom-in":
+                console.log("🔍 Zoom in triggered, current:", avatarState.zoom);
+                if (avatarState.zoom < 1.5) {
+                    avatarState.zoom += 0.1;
+                    avatarState.zoom = Math.round(avatarState.zoom * 10) / 10; // Fix floating point issues
+                    updateAvatarTransform();
+                    console.log("🔍 Zoomed in to:", avatarState.zoom);
+                } else {
+                    console.log("🔍 Max zoom reached");
+                }
+                break;
+            case "zoom-out":
+                console.log("🔍 Zoom out triggered, current:", avatarState.zoom);
+                if (avatarState.zoom > 0.5) {
+                    avatarState.zoom -= 0.1;
+                    avatarState.zoom = Math.round(avatarState.zoom * 10) / 10; // Fix floating point issues
+                    updateAvatarTransform();
+                    console.log("🔍 Zoomed out to:", avatarState.zoom);
+                } else {
+                    console.log("🔍 Min zoom reached");
+                }
+                break;
+            case "rotate-left":
+                avatarState.rotation -= 15;
+                updateAvatarTransform();
+                console.log("🔄 Rotate left to:", avatarState.rotation);
+                break;
+            case "rotate-right":
+                avatarState.rotation += 15;
+                updateAvatarTransform();
+                console.log("🔄 Rotate right to:", avatarState.rotation);
+                break;
+            default:
+                console.log("❌ Unknown action:", action);
+        }
+    });
+    
+    // Hover effects for avatar controls
+    $("#avatar-controls button").on("mouseenter", function() {
+        console.log("🎮 Hover on button:", $(this).attr("id"));
+        $(this).css("background", "#d59ca6");
+    }).on("mouseleave", function() {
+        $(this).css("background", "#a4446e");
+    });
+    
+    console.log("🎮 Avatar controls event handlers attached");
+}
+
+function setupWardrobeMainPanelControls() {
+    $("#category-buttons").off("click");
+    $("#clothing-options").off("click");
+    
+    // Category button hover effects
+    $(".category-btn").on("mouseenter", function() {
+        if (!$(this).hasClass("active")) {
+            $(this).css("transform", "translateY(-3px) scale(1.02)");
+        }
+    }).on("mouseleave", function() {
+        if (!$(this).hasClass("active")) {
+            $(this).css("transform", "translateY(0) scale(1)");
+        }
+    });
+    
+    $("#category-buttons").on("click", ".category-btn", function(e) {
+        e.preventDefault();
+        const category = $(this).data("category");
+        
+        // Update button states
+        $(".category-btn").removeClass("active").css({
+            "background": "linear-gradient(135deg, #a4446e, #d59ca6)",
+            "transform": "translateY(0) scale(1)"
+        });
+        
+        $(this).addClass("active").css({
+            "background": "linear-gradient(135deg, #8b3a5e, #c18b96)",
+            "transform": "translateY(-2px) scale(1.05)"
+        });
+        
+        showClothingOptions(category);
+    });
+    
+    $("#clothing-options").on("click", ".clothing-item", function(e) {
+        e.preventDefault();
+        const item = $(this).data("item");
+        const category = $(this).data("category");
+        
+        // Update avatar outfit
+        avatarState.currentOutfit[category] = item;
+        
+        // Visual feedback
+        $(".clothing-item").removeClass("selected").css({
+            "background": "white",
+            "border-color": "#e0ccd1",
+            "color": "#3a3a3a"
+        });
+        
+        $(this).addClass("selected").css({
+            "background": "linear-gradient(135deg, #d59ca6, #fceef5)",
+            "border-color": "#a4446e",
+            "color": "#a4446e",
+            "transform": "scale(1.02)"
+        });
+        
+        updateAvatarOutfit();
+    });
+    
+    // Set up filter toggle - FIXED: No icons, clean text only
+    $("#toggle-filters").on("click", function(e) {
+        e.preventDefault();
+        const filterPanel = $("#filter-panel");
+        
+        if (filterPanel.is(":visible")) {
+            filterPanel.slideUp(200);
+            $(this).text("Filters");
+        } else {
+            filterPanel.slideDown(200);
+            $(this).text("Hide");
+        }
+    });
+    
+    // Filter functionality
+    $("#style-filter, #price-filter, #brand-filter, #silhouette-filter").on("change", function() {
+        applyFilters();
+    });
+    
+    // Clear filters
+    $("#clear-filters").on("click", function() {
+    	$("#style-filter, #price-filter, #brand-filter, #silhouette-filter").val("");
+        applyFilters();
+        
+        // Visual feedback
+        $(this).css("transform", "scale(0.95)");
+        setTimeout(() => $(this).css("transform", "scale(1)"), 150);
+    });
+    
+    // Set up finish button
+    $("#finish-outfit").on("click", function() {
+        const button = $(this);
+        
+        // Save outfit to game state
+        if (typeof State !== "undefined" && State.variables) {
+            State.variables.currentOutfit = {...avatarState.currentOutfit};
+            console.log("💾 Outfit saved to game state:", State.variables.currentOutfit);
+        }
+        
+        // Visual feedback
+        button.css({
+            "transform": "scale(0.95)",
+            "background": "linear-gradient(135deg, #8b3a5e, #c18b96)"
+        });
+        
+        setTimeout(() => {
+            button.css({
+                "transform": "scale(1)",
+                "background": "linear-gradient(135deg, #a4446e, #d59ca6)"
+            });
+        }, 150);
+        
+        // Show success message
+        const successMessage = `
+            <div id="outfit-success" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                 background: linear-gradient(135deg, #d59ca6, #fceef5); 
+                 border: 3px solid #a4446e; border-radius: 12px; 
+                 padding: 2em; text-align: center; z-index: 2000;
+                 box-shadow: 0 8px 24px rgba(164, 68, 110, 0.5);
+                 animation: successPulse 0.5s ease-out;">
+                <h3 style="color: #a4446e; margin: 0 0 1em 0;">✨ Outfit Complete! ✨</h3>
+                <p style="color: #666; margin: 0 0 1.5em 0;">Your stylish look has been saved.</p>
+                <button id="close-success" style="background: #a4446e; color: white; border: none; border-radius: 6px; padding: 0.8em 1.5em; font-weight: bold; cursor: pointer;">
+                    Perfect!
+                </button>
+            </div>
+            
+            <style>
+            @keyframes successPulse {
+                0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                50% { transform: translate(-50%, -50%) scale(1.05); }
+                100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            }
+            </style>
+        `;
+        
+        $("body").append(successMessage);
+        
+        $("#close-success").on("click", function() {
+            $("#outfit-success").remove();
+        });
+        
+        // Auto-close after 3 seconds
+        setTimeout(() => {
+            $("#outfit-success").fadeOut(300, function() {
+                $(this).remove();
+            });
+        }, 3000);
+    });
+}
+
+function updateAvatarTransform() {
+    console.log("🎯 Updating avatar transform - Zoom:", avatarState.zoom, "Rotation:", avatarState.rotation);
+    $("#avatar-display").css("transform", `scale(${avatarState.zoom}) rotate(${avatarState.rotation}deg)`);
+}
+
+function updateAvatarOutfit() {
+    // Avatar display is now clean - no text to update
+    // The outfit information is only shown in the main panel
+    console.log("🎨 Avatar updated (display is clean)");
+}
+
+function showClothingOptions(category) {
+    const clothingData = {
+        inner: [
+            { id: "bralette", name: "Lace Bralette", brand: "Delicate Dreams", style: "cute", description: "Elegant lace bralette with adjustable straps for perfect comfort", price: 35 },
+            { id: "bandeau", name: "Seamless Bandeau", brand: "Minimalist", style: "minimal", description: "Strapless bandeau that's invisible under any outfit", price: 25 },
+            { id: "camisole", name: "Silk Camisole", brand: "Luxe Label", style: "luxury", description: "Premium silk camisole with delicate adjustable straps", price: 65 },
+            { id: "sports-bra", name: "High-Support Sports Bra", brand: "ActiveFit", style: "synthetic", description: "Maximum support sports bra for high-intensity activities", price: 40 }
+        ],
+        tops: [
+            { id: "t-shirt", name: "Basic Cotton Tee", brand: "Essentials", style: "minimal", description: "Soft cotton t-shirt perfect for everyday wear", price: 20 },
+            { id: "blouse", name: "Silk Button Blouse", brand: "Professional", style: "luxury", description: "Elegant silk blouse with pearl buttons for a sophisticated look", price: 85 },
+            { id: "sweater", name: "Chunky Knit Sweater", brand: "Cozy Co", style: "homemade", description: "Oversized wool sweater that's perfect for chilly days", price: 60 },
+            { id: "corset", name: "Structured Corset Top", brand: "Gothic Glam", style: "edge", description: "Statement corset with structured boning and dramatic silhouette", price: 95 }
+        ],
+        outer: [
+            { id: "trench-coat", name: "Classic Trench Coat", brand: "Timeless", style: "suave", description: "Iconic beige trench coat with belt and classic detailing", price: 150 },
+            { id: "leather-jacket", name: "Biker Leather Jacket", brand: "Rebel Style", style: "edge", description: "Genuine leather jacket with silver hardware and attitude", price: 200 },
+            { id: "blazer", name: "Tailored Blazer", brand: "Executive", style: "sleek", description: "Sharp-shouldered blazer for professional power dressing", price: 120 },
+            { id: "kimono-jacket", name: "Silk Kimono Jacket", brand: "Eastern Grace", style: "fluid", description: "Flowing silk kimono with delicate cherry blossom print", price: 110 }
+        ],
+        bottoms: [
+            { id: "jeans", name: "High-Waist Jeans", brand: "Vintage Vibes", style: "vintage", description: "Classic high-waist denim with authentic vintage wash", price: 60 },
+            { id: "dress-pants", name: "Tailored Trousers", brand: "Professional", style: "sleek", description: "Perfectly tailored wool-blend trousers for the office", price: 80 },
+            { id: "cargo-pants", name: "Tactical Cargo Pants", brand: "UrbanOps", style: "tactical", description: "Multi-pocket utility pants ready for any adventure", price: 70 },
+            { id: "leggings", name: "High-Tech Leggings", brand: "ActiveFit", style: "synthetic", description: "Performance leggings with moisture-wicking technology", price: 45 }
+        ],
+        skirts: [
+            { id: "pencil-skirt", name: "High-Waist Pencil Skirt", brand: "Executive", style: "sleek", description: "Form-fitting pencil skirt that commands attention", price: 55 },
+            { id: "circle-skirt", name: "Full Circle Skirt", brand: "Retro Revival", style: "retro", description: "1950s inspired circle skirt with playful swing", price: 65 },
+            { id: "asymmetrical-skirt", name: "Asymmetric Hem Skirt", brand: "Avant-Garde", style: "avant-garde", description: "Experimental design with dramatic asymmetrical hemline", price: 90 },
+            { id: "pleated-skirt", name: "Pleated Mini Skirt", brand: "Sweet Style", style: "cute", description: "Playful pleated mini with schoolgirl charm", price: 40 }
+        ],
+        dress: [
+            { id: "shift-dress", name: "Minimalist Shift Dress", brand: "Clean Lines", style: "minimal", description: "Effortlessly chic shift dress in premium fabric", price: 100 },
+            { id: "wrap-dress", name: "Vintage Wrap Dress", brand: "Retro Revival", style: "vintage", description: "Flattering wrap dress with timeless floral print", price: 75 },
+            { id: "cocktail-dress", name: "Sequined Cocktail Dress", brand: "Glamour", style: "luxury", description: "Dazzling sequined dress perfect for special occasions", price: 180 },
+            { id: "bodycon-dress", name: "Bodycon Midi Dress", brand: "Figure Fit", style: "edge", description: "Body-hugging stretch dress that celebrates your curves", price: 60 }
+        ],
+        hosiery: [
+            { id: "thigh-highs", name: "Lace-Top Thigh Highs", brand: "Delicate Dreams", style: "cute", description: "Sheer thigh-high stockings with romantic lace tops", price: 25 },
+            { id: "fishnet-tights", name: "Fishnet Tights", brand: "Rebel Style", style: "edge", description: "Bold fishnet tights that make a statement", price: 15 },
+            { id: "knee-highs", name: "Striped Knee Highs", brand: "Y2K Revival", style: "y2k", description: "Colorful striped knee-high socks with retro flair", price: 20 },
+            { id: "bodystocking", name: "Sheer Bodystocking", brand: "Avant-Garde", style: "avant-garde", description: "Full-body sheer bodystocking for the adventurous", price: 50 }
+        ],
+        shoes: [
+            { id: "stilettos", name: "Patent Leather Stilettos", brand: "Luxe Steps", style: "luxury", description: "Sky-high patent leather heels for ultimate glamour", price: 120 },
+            { id: "combat-boots", name: "Military Combat Boots", brand: "UrbanOps", style: "tactical", description: "Heavy-duty lace-up boots built for durability", price: 90 },
+            { id: "ballet-flats", name: "Leather Ballet Flats", brand: "Essentials", style: "minimal", description: "Classic leather flats for effortless elegance", price: 55 },
+            { id: "platform-boots", name: "Platform Ankle Boots", brand: "Y2K Revival", style: "y2k", description: "Chunky platform boots with serious height", price: 85 }
+        ],
+        accessories: [
+            { id: "choker", name: "Velvet Choker", brand: "Gothic Glam", style: "edge", description: "Classic black velvet choker with vintage appeal", price: 20 },
+            { id: "designer-glasses", name: "Cat-Eye Glasses", brand: "Retro Revival", style: "vintage", description: "Statement cat-eye frames with retro sophistication", price: 85 },
+            { id: "leather-gloves", name: "Opera Length Gloves", brand: "Luxe Label", style: "luxury", description: "Elegant long leather gloves for formal occasions", price: 75 },
+            { id: "statement-belt", name: "Chain Link Belt", brand: "Rebel Style", style: "edge", description: "Heavy metal chain belt that demands attention", price: 60 }
+        ]
+    };
+    
+    const items = clothingData[category] || [];
+    const categoryNames = {
+        inner: "Inner",
+        tops: "Tops", 
+        outer: "Outer",
+        bottoms: "Bottoms",
+        skirts: "Skirts",
+        dress: "Dress",
+        hosiery: "Hosiery",
+        shoes: "Shoes",
+        accessories: "Accessories"
+    };
+    
+    // Handle accessories subcategories
+    if (category === "accessories") {
+        let html = `
+            <div style="text-align: center; margin: 2em 0;">
+                <h3 style="color: #a4446e; font-size: 2em; margin: 0;">
+                    ${categoryNames[category]}
+                </h3>
+                <p style="color: #666; font-size: 1.1em; margin: 0.5em 0 0 0;">Choose a subcategory</p>
+            </div>
+        `;
+        
+        const accessorySubcategories = [
+            { id: "gloves", name: "Gloves", emoji: "🧤" },
+            { id: "bracelets", name: "Bracelets", emoji: "📿" },
+            { id: "necklaces", name: "Necklaces", emoji: "📿" },
+            { id: "scarves", name: "Scarves", emoji: "🧣" },
+            { id: "glasses", name: "Glasses", emoji: "👓" },
+            { id: "headwear", name: "Headwear", emoji: "🎩" },
+            { id: "belts", name: "Belts", emoji: "👔" },
+            { id: "brooches", name: "Brooches", emoji: "📌" },
+            { id: "anklets", name: "Anklets", emoji: "🦶" },
+            { id: "legwarmers", name: "Legwarmers", emoji: "🧦" }
+        ];
+        
+        html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1em;">';
+        
+        accessorySubcategories.forEach(subcategory => {
+            html += `
+                <button class="subcategory-btn" data-subcategory="${subcategory.id}" 
+                        style="background: white; border: 2px solid #e0ccd1; color: #a4446e; border-radius: 8px; 
+                        padding: 1em; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease;
+                        text-align: center;">
+                    <div style="font-size: 2em; margin-bottom: 0.5em;">${subcategory.emoji}</div>
+                    <div>${subcategory.name}</div>
+                </button>
+            `;
+        });
+        
+        html += '</div>';
+        $("#clothing-options").html(html);
+        
+        $(".subcategory-btn").on("click", function(e) {
+            e.preventDefault();
+            const subcategory = $(this).data("subcategory");
+            showAccessorySubcategory(subcategory);
+        });
+        
+        return;
+    }
+    
+    // Regular category display - clean with just header and clothing grid
+    let html = `
+        <div style="text-align: center; margin: 2em 0;">
+            <h3 style="color: #a4446e; font-size: 2em; margin: 0;">
+                ${categoryNames[category]}
+            </h3>
+        </div>
+    `;
+    
+    if (items.length === 0) {
+        html += `<div style="text-align: center; color: #666; font-size: 1.2em; padding: 2em;">No items available in this category</div>`;
+    } else {
+        // Grid layout for asset containers - 5 columns with smaller gap
+        html += '<div id="clothing-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6em; padding: 0 1em;">';
+        
+        items.forEach(item => {
+            const isSelected = avatarState.currentOutfit[category] === item.id;
+            
+            html += `
+                <div class="clothing-item ${isSelected ? 'selected' : ''}" 
+                     data-item="${item.id}" data-category="${category}"
+                     data-name="${item.name}" data-brand="${item.brand}" data-description="${item.description}"
+                     data-style="${item.style}" data-price="${item.price}"
+                     style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; 
+                     background: ${isSelected ? 'linear-gradient(135deg, #d59ca6, #fceef5)' : 'white'}; 
+                     border: 3px solid ${isSelected ? '#a4446e' : '#e0ccd1'}; 
+                     border-radius: 12px; cursor: pointer; position: relative;
+                     transition: all 0.3s ease; 
+                     box-shadow: ${isSelected ? '0 4px 12px rgba(164, 68, 110, 0.4)' : '0 2px 8px rgba(224, 204, 209, 0.2)'};
+                     ${isSelected ? 'transform: scale(1.05);' : ''}">
+                     
+                    <div class="asset-icon" style="width: 80%; height: 80%; background: #f8f8f8; border-radius: 8px; 
+                         display: flex; align-items: center; justify-content: center;
+                         border: 2px dashed #ddd; position: relative;">
+    
+                    <div style="font-size: 0.7em; color: #aaa; text-align: center; line-height: 1.2;">
+                        ${item.id}
+                    </div>
+                    
+                </div>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+}
+    
+    $("#clothing-options").html(html);
+    
+    // Click handlers for clothing items
+    $(".clothing-item").on("click", function(e) {
+        e.preventDefault();
+        const $item = $(this);
+        const itemId = $item.data("item");
+        const itemName = $item.data("name");
+        const itemBrand = $item.data("brand");
+        const itemDescription = $item.data("description");
+        const category = $item.data("category");
+        
+        avatarState.currentOutfit[category] = itemId;
+        updateAvatarDisplay();
+        
+        $("#avatar-bottom-overlay").remove();
+        
+        const avatarContainer = $("#avatar-container");
+        if (avatarContainer.length) {
+            const containerOffset = avatarContainer.offset();
+            const containerWidth = avatarContainer.outerWidth();
+            const containerHeight = avatarContainer.outerHeight();
+            
+            const bottomOverlay = `
+                <div id="avatar-bottom-overlay" style="position: fixed; 
+                     left: ${containerOffset.left}px; 
+                     top: ${containerOffset.top + containerHeight - 120}px; 
+                     width: ${containerWidth}px; 
+                     height: 120px;
+                     background: rgba(252, 238, 245, 0.98); 
+                     backdrop-filter: blur(3px);
+                     border-radius: 0 0 8px 8px; 
+                     z-index: 1000; 
+                     display: flex; 
+                     align-items: center; 
+                     padding: 1em;
+                     box-shadow: 0 -4px 12px rgba(164, 68, 110, 0.3);
+                     animation: slideUpOverlay 0.3s ease-out;
+                     box-sizing: border-box;">
+                    
+                    <div style="display: flex; align-items: center; gap: 1em; width: 100%;">
+                        
+                        <div style="width: 60px; height: 60px; background: #f8f8f8; border-radius: 8px; 
+                             border: 2px dashed #ddd; display: flex; align-items: center; justify-content: center; 
+                             flex-shrink: 0;">
+                            <span style="font-size: 0.7em; color: #aaa;">${itemId}</span>
+                        </div>
+                        
+                        <div style="flex: 1; min-width: 0;">
+                            <h4 style="color: #a4446e; margin: 0 0 0.2em 0; font-size: 1.1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${itemName}</h4>
+                            <div style="color: #d59ca6; font-weight: bold; font-size: 0.9em; margin-bottom: 0.3em;">${itemBrand}</div>
+                            <p style="color: #666; line-height: 1.2; margin: 0; font-size: 0.8em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${itemDescription}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <style>
+                @keyframes slideUpOverlay {
+                    from {
+                        opacity: 0;
+                        transform: translateY(100%);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                </style>
+            `;
+            
+            $("body").append(bottomOverlay);
+        }
+        
+        showClothingOptions(category);
+    });
+    
+    // Hover effects for clothing items
+    $(".clothing-item").on("mouseenter", function() {
+        if (!$(this).hasClass("selected")) {
+            $(this).css({
+                "transform": "translateY(-2px) scale(1.05)",
+                "box-shadow": "0 6px 16px rgba(164, 68, 110, 0.3)"
+            });
+        }
+    }).on("mouseleave", function() {
+        if (!$(this).hasClass("selected")) {
+            $(this).css({
+                "transform": "translateY(0) scale(1)",
+                "box-shadow": "0 2px 8px rgba(224, 204, 209, 0.2)"
+            });
+        }
+    });
+}
+
+function showAccessorySubcategory(subcategory) {
+    const html = `
+        <div style="text-align: center; padding: 3em;">
+            <h3 style="color: #a4446e; margin-bottom: 1em;">
+                ${subcategory.charAt(0).toUpperCase() + subcategory.slice(1)}
+            </h3>
+            <p style="color: #666;">Items for this subcategory coming soon...</p>
+            <button onclick="showClothingOptions('accessories')" 
+                    style="margin-top: 1em; background: #a4446e; color: white; border: none; border-radius: 6px; padding: 0.5em 1em; cursor: pointer;">
+                ← Back to Accessories
+            </button>
+        </div>
+    `;
+    $("#clothing-options").html(html);
+}
+
+// Filter function
+function applyFilters() {
+  	const silhouetteFilter = $("#silhouette-filter").val();
+  	const brandFilter = $("#brand-filter").val();
+    const styleFilter = $("#style-filter").val();
+    const priceFilter = $("#price-filter").val();
+    
+    let visibleCount = 0;
+    
+    $(".clothing-item").each(function() {
+        const $item = $(this);
+        const itemStyle = $item.data("style");
+        const itemPrice = $item.data("price");
+        const itemBrand = $item.data("brand");
+        const itemId = $item.data("item");
+        
+        let show = true;
+        
+        // Style filter
+        if (styleFilter && itemStyle !== styleFilter) {
+            show = false;
+        }
+        
+        // Price filter
+        if (priceFilter && show) {
+            const [min, max] = priceFilter.split("-").map(Number);
+            if (itemPrice < min || (max !== 999 && itemPrice > max)) {
+                show = false;
+            }
+        }
+        
+        // Brand filter
+        if (brandFilter && itemBrand !== brandFilter) {
+            show = false;
+        }
+        
+        // Silhouette filter
+        if (silhouetteFilter && itemId !== silhouetteFilter) {
+            show = false;
+        }
+        
+        if (show) {
+            $item.show();
+            visibleCount++;
+        } else {
+            $item.hide();
+        }
+    });
+    
+    // Show/hide no results message
+    if (visibleCount === 0) {
+        if ($("#no-results").length === 0) {
+            $("#clothing-grid").after(`
+                <div id="no-results" style="text-align: center; color: #666; font-size: 1.1em; padding: 2em; margin-top: 1em; background: #f9f9f9; border-radius: 8px; border: 2px dashed #e0ccd1;">
+                    No items match your current filters
+                </div>
+            `);
+        }
+    } else {
+        $("#no-results").remove();
+    }
+}
+
+function restoreNormalSidebar() {
+    const imageContainer = $("#sidebar-image-container");
+    const sidebarContent = $("#sidebar-content");
+    const sidebarFooter = $("#sidebar-footer");
+    
+    if (imageContainer.length === 0 || sidebarContent.length === 0) {
+        return;
+    }
+    
+    imageContainer.show();
+    
+    sidebarContent.html(`
+        <div id="stats-calendar-row">
+            <div id="player-stats">
+                <div class="stat-row">
+                    <span class="stat-value digital-time" id="player-time"></span>
+                    <span class="stat-label money-label">Money:</span>
+                    <span class="stat-value" id="player-money"></span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Reputation:</span>
+                    <span class="stat-value" id="player-reputation"></span>
+                </div>
+            </div>
+            <div id="calendar-container"></div>
+        </div>
+    `);
+    
+    // Maintain exact same footer settings as wardrobe
+    if (sidebarFooter.length > 0) {
+        sidebarFooter.show().css({
+            'position': 'relative',
+            'display': 'block',
+            'margin-top': 'auto'
+        });
+        
+        if (sidebarFooter.find('#options-button').length === 0) {
+            sidebarFooter.html(`
+                <div id="sidebar-options">
+                    <button id="options-button">Options</button>
+                </div>
+                <div id="sidebar-buttons">
+                    <button id="save-button">Save</button>
+                    <button id="load-button">Load</button>
+                </div>
+            `);
+        }
+    }
+    
+    if (typeof updateStats === "function") updateStats();
+    if (typeof renderSidebarCalendar === "function") renderSidebarCalendar();
+}
+
+function wardrobeSidebarManager() {
+    const passageTitle = getCurrentPassageTitle();
+    
+    if (passageTitle === "Wardrobe") {
+        renderWardrobeSidebar();
+    } else {
+        restoreNormalSidebar();
+    }
+}
+
+// ---- EVENT HANDLERS ----
+$(document).off(':passagerender :storyready');
+
+$(document).on(':storyready', function () {
+    updateStats();
+    renderSidebarCalendar();
+    setTimeout(function() {
+        wardrobeSidebarManager();
+    }, 10);
+});
+
+$(document).on(':passagerender', function () {
+    setTimeout(function() {
+        updateStats();
+        renderSidebarCalendar();
+        wardrobeSidebarManager();
+    }, 10);
+});
+
+:: StoryStylesheet [stylesheet]
+/* ==== MAIN LAYOUT ==== */
+#game-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #3a3a3a;
+}
+
+/* ==== SIDEBAR STRUCTURE ==== */
+#sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    flex: 1 1 0;
+    min-width: 180px;
+    max-width: 600px;
+    background-color: #fceef5;
+    border-right: 3px solid #e0ccd1;
+    box-sizing: border-box;
+    color: #3a3a3a;
+    padding: 0;
+}
+
+/* Sidebar image at the very top, fills available vertical space before stats/calendar/footer */
+#sidebar-image-container {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 80px;
+    max-height: 300px;
+    overflow: hidden;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    background: #e0ccd1;
+    border-radius: 8px 8px 0 0;
+    box-sizing: border-box;
+}
+#sidebar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Sidebar main content (stats and calendar side-by-side) */
+#sidebar-content {
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 1em 1em 0.5em 1em;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+/* Side-by-side row for stats and calendar */
+#stats-calendar-row {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+#player-stats {
+    flex: 1 1 0;
+    max-width: 60%;
+    /* Additional custom stats styles here */
+}
+
+.stat-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    margin-bottom: 0.2em;
+}
+.stat-label {
+    font-weight: bold;
+    margin-right: 0.2em;
+}
+.money-label {
+    margin-left: 1.5em; /* extra space before money stat */
+}
+.stat-value {
+    font-weight: normal;
+}
+
+#calendar-container {
+    flex: 0 0 auto;
+    max-width: 220px;
+    width: 220px;
+    min-width: 160px;
+}
+
+/* ==== CALENDAR ==== */
+#calendar-month-label {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1em;
+    margin: 0.3em 0 0.1em 0;
+    color: #a4446e;
+}
+#calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1.8em);
+    grid-auto-rows: 1.8em;
+    gap: 0.1em;
+    justify-content: center;
+    background: #fffdfb;
+    padding: 0.15em;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px #e0ccd180;
+    user-select: none;
+    max-width: 100%;
+    overflow: auto;
+}
+.calendar-day,
+.calendar-day-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85em;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+.calendar-day-header {
+    font-weight: bold;
+    color: #a4446e;
+    background: #fceef5;
+}
+.calendar-day {
+    background: #fceef5;
+    color: #3a3a3a;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    border: 1px solid #e0ccd1;
+}
+.calendar-day:hover {
+    background: #d59ca6;
+    color: white;
+}
+.calendar-day.selected {
+    background: #a4446e;
+    color: white;
+}
+
+/* ==== SIDEBAR FOOTER & BUTTONS ==== */
+#sidebar-footer {
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 1em;
+    border-top: 1px solid #e0ccd1;
+    background-color: #fceef5;
+    box-sizing: border-box;
+}
+#sidebar-options {
+    text-align: center;
+    margin-bottom: 0.75em;
+}
+#options-button {
+    padding: 0.5em 1em;
+    font-size: 1em;
+    background-color: #a4446e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+#options-button:hover {
+    background-color: #d59ca6;
+}
+#sidebar-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5em;
+}
+#sidebar-buttons button {
+    flex: 1;
+    padding: 0.5em;
+    font-size: 1em;
+    background-color: #a4446e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+#sidebar-buttons button:hover {
+    background-color: #d59ca6;
+}
+
+/* ==== MAIN PANEL ==== */
+#main-panel {
+    flex: 2 1 0;
+    padding: 2em;
+    background-color: #fffdfb;
+    overflow-y: auto;
+}
+tw-passage {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* ==== MODAL FORM ==== */
+#form-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10010;
+    display: none;
+    background: rgba(0,0,0,0.4);
+    align-items: center;
+    justify-content: center;
+}
+#form-modal .modal-content {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 32px #0002;
+    min-width: 320px;
+    max-width: 98vw;
+    margin: auto;
+    color: #222;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    padding: 0;
+}
+#form-modal .modal-content.two-col {
+    display: flex;
+    gap: 2.5em;
+    align-items: flex-start;
+    justify-content: stretch;
+    padding: 2em 2.5em;
+    min-width: 600px;
+    max-width: 98vw;
+    box-sizing: border-box;
+    word-break: break-word;
+}
+#form-modal .form-col {
+    flex: 1 1 320px;
+    min-width: 300px;
+    max-width: 380px;
+    word-break: break-word;
+}
+#form-modal .info-col {
+    flex: 0 1 360px;
+    min-width: 220px;
+    max-width: 400px;
+    border-left: 2px solid #fceef5;
+    padding-left: 2em;
+    color: #444;
+    font-size: 0.93em;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+#form-modal .modal-content h2 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-top: 0;
+    margin-bottom: 1em;
+    color: #a4446e;
+}
+#form-modal .modal-content h3 {
+    font-size: 1.1em;
+    color: #d59ca6;
+    margin-top: 1.2em;
+    margin-bottom: 0.2em;
+}
+#form-modal .modal-content label {
+    font-weight: bold;
+    display: block;
+    margin: 0.5em 0 0.2em 0;
+    color: #222;
+}
+#form-modal .modal-content input,
+#form-modal .modal-content select {
+    font-weight: normal;
+    width: 100%;
+    padding: 0.5em;
+    margin-bottom: 1em;
+    border-radius: 4px;
+    border: 1px solid #e0ccd1;
+    box-sizing: border-box;
+    font-size: 1em;
+    color: #222;
+    background: #fff;
+}
+#form-modal .modal-content ul {
+    margin: 0.3em 0 1em 1.2em;
+    padding: 0;
+    font-size: 0.97em;
+    color: #444;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+#form-modal .info-col ul li {
+    margin-bottom: 0.7em; /* Add spacing between work experience bullets */
+}
+#form-modal .modal-content p {
+    margin: 0.1em 0 0.5em 0;
+    color: #444;
+    word-break: break-word;
+}
+#form-modal .modal-content li {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+#form-modal .modal-content .form-section {
+    margin-bottom: 1em;
+}
+#form-modal .modal-content button {
+    background-color: #a4446e;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.6em 1em;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-weight: bold;
+    display: block;
+    margin: 1.5em auto 0 auto;
+}
+#form-modal .modal-content button:hover {
+    background-color: #d59ca6;
+}
+
+/* Responsive: stack columns on small screens */
+@media (max-width: 800px) {
+    #form-modal .modal-content.two-col {
+        flex-direction: column;
+        gap: 1.5em;
+        min-width: 280px;
+        padding: 1.2em 1em;
+    }
+    #form-modal .info-col {
+        border-left: none;
+        border-top: 2px solid #fceef5;
+        padding-left: 0;
+        padding-top: 1em;
+        min-width: 0;
+        max-width: none;
+    }
+}
+
+/* ==== LINKS, BUTTONS, ETC ==== */
+a,
+button,
+tw-link {
+    color: #a4446e;
+    text-decoration: none;
+    font-weight: bold;
+}
+a:hover,
+button:hover,
+tw-link:hover {
+    color: #d59ca6;
+    text-decoration: underline;
+}
+
+/* Wardrobe main panel styling */
+#wardrobe-main-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.category-btn {
+    background-color: #a4446e !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 0.8em 1.2em !important;
+    font-size: 1em !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-weight: bold !important;
+    min-width: 120px;
+}
+
+.category-btn:hover {
+    background-color: #d59ca6 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(164, 68, 110, 0.3);
+}
+
+.clothing-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(164, 68, 110, 0.2);
+    border-color: #a4446e !important;
+}
+
+.clothing-item.selected:hover {
+    background-color: #d59ca6 !important;
+    border-color: #a4446e !important;
+}
+
+/* Avatar controls repositioned */
+#avatar-sidebar-content #avatar-controls {
+    margin-top: auto;
+    padding-top: 1em;
+}
+
+/* Ensure avatar container takes remaining space */
+#avatar-sidebar-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#avatar-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ensure sidebar footer stays at bottom in wardrobe mode */
+#sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+#sidebar-content {
+    flex: 1 1 auto; /* Takes available space */
+}
+
+#sidebar-footer {
+    flex: 0 0 auto; /* Fixed size, stays at bottom */
+    margin-top: auto; /* Push to bottom */
+}
+
+/* Wardrobe avatar content should fill available space above footer */
+#avatar-sidebar-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#avatar-container {
+    flex: 1; /* Takes most space */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#avatar-controls {
+    flex: 0 0 auto; /* Fixed size */
+    margin-top: 1em;
+}
+
+#avatar-controls button {
+    text-decoration: none !important;
+}
+
+#avatar-controls button:hover {
+    text-decoration: none !important;
+}
+
+/* ==== CATEGORY BUTTONS - Active state styling ==== */
+.category-btn.active {
+    background: #d59ca6 !important;
+    color: white !important;
+    transform: translateY(-2px) scale(1.05) !important;
+    box-shadow: 0 4px 8px rgba(164, 68, 110, 0.3) !important;
+}
+
+.category-btn.active:hover {
+    background: #d59ca6 !important;
+    color: white !important;
+}
