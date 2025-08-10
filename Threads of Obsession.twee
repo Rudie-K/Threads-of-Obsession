@@ -100,7 +100,7 @@ You never filled out the form!
   </div>
 </div>
 <!-- Modal container, always present: -->
-<div id="form-modal" style="display:none;"></div>
+<div id="form-modal" class="form-modal"></div>
 
 
 :: Wardrobe {"position":"450,275","size":"100,100"}
@@ -278,7 +278,7 @@ window.showFormModal = function() {
 		</div>
 	`;
 	
-	$("#form-modal").html(modalHtml).css("display", "flex");
+	$("#form-modal").html(modalHtml).addClass("show");
 
 	// Add input validation for DD/MM format
 	$("#form-birthday").on("input", function() {
@@ -424,13 +424,13 @@ function renderWardrobeSidebar() {
     
     // Create the wardrobe sidebar with clean avatar display
     sidebarContent.html(`
-        <div id="avatar-sidebar-content" style="height: 100%; display: flex; flex-direction: column;">
+        <div id="avatar-sidebar-content" class="avatar-sidebar-content">
             <div id="avatar-container" class="avatar-container">
-                <div id="avatar-display" style="width: 90%; height: 90%; display: flex; align-items: center; justify-content: center; transform: scale(${avatarState.zoom}) rotate(${avatarState.rotation}deg); transition: all 0.3s ease;">
-                    <div id="avatar-character" style="font-size: 6em; filter: drop-shadow(2px 2px 4px rgba(164, 68, 110, 0.3));">👤</div>
+                <div id="avatar-display" class="avatar-display" style="transform: scale(${avatarState.zoom}) rotate(${avatarState.rotation}deg);">
+                    <div id="avatar-character" class="avatar-character">👤</div>
                 </div>
             </div>
-            <div id="avatar-controls" style="display: flex; justify-content: center; gap: 0.5em; margin-bottom: 0.5em;">
+            <div id="avatar-controls" class="avatar-controls">
                 <button id="zoom-in" title="Zoom In" class="btn-primary btn-round-40">+</button>
                 <button id="zoom-out" title="Zoom Out" class="btn-primary btn-round-40">−</button>
                 <button id="rotate-left" title="Rotate Left" class="btn-primary btn-round-40">↺</button>
@@ -531,18 +531,18 @@ function injectWardrobeMainPanel() {
             transform: none !important;
         }
     </style>
-    <div id="wardrobe-main-content" style="max-width: 900px; margin: 0 auto; padding: 0; padding-top: 2em; padding-bottom: 2em;">
-                <div style="text-align: center; margin: 0; padding: 0; margin-bottom: 2em;">
+    <div id="wardrobe-main-content" class="wardrobe-main-content">
+                <div class="text-center">
                     <h1 class="wardrobe-title">Your Wardrobe</h1>
                 </div>
                 
                 <div id="wardrobe-categories" class="wardrobe-categories">
                     
                     <!-- Category Buttons Row with Side Buttons -->
-                    <div style="position: relative; margin-bottom: 1em;">
+                    <div class="category-container">
                         
                         <!-- ORIGINAL Category Buttons Layout - Unchanged -->
-                        <div id="category-buttons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4em;">
+                        <div id="category-buttons" class="category-buttons">
                             <button class="category-btn btn-category btn-round-30" data-category="inner" title="Inner">
                                 👙
                             </button>
@@ -585,7 +585,7 @@ function injectWardrobeMainPanel() {
                     
                     <!-- Filter Panel with Silhouette Filter -->
                     <div id="filter-panel" class="filter-panel">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1em;">
+                        <div class="filter-grid">
                             
                             <!-- Style Filter -->
                             <div>
@@ -623,8 +623,8 @@ function injectWardrobeMainPanel() {
                             
                             <!-- Brand Filter -->
                             <div>
-                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Brand:</label>
-                                <select id="brand-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
+                                <label class="filter-label">Brand:</label>
+                                <select id="brand-filter" class="filter-select">
                                     <option value="">All Brands</option>
                                     <option value="Delicate Dreams">Delicate Dreams</option>
                                     <option value="Minimalist">Minimalist</option>
@@ -653,8 +653,8 @@ function injectWardrobeMainPanel() {
                             
                             <!-- Silhouette Filter -->
                             <div>
-                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Silhouette:</label>
-                                <select id="silhouette-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
+                                <label class="filter-label">Silhouette:</label>
+                                <select id="silhouette-filter" class="filter-select">
                                     <option value="">All Silhouettes</option>
                                     <option value="bralette">Bralette</option>
                                     <option value="bandeau">Bandeau</option>
@@ -692,7 +692,7 @@ function injectWardrobeMainPanel() {
                             </div>
                             
                             <!-- Clear Filters -->
-                            <div style="display: flex; align-items: end;">
+                            <div class="flex-end">
                                 <button id="clear-filters" style="background: #d59ca6; color: white; border: none; border-radius: 4px; padding: 0.4em 0.8em; cursor: pointer; font-size: 0.8em; width: 100%;">
                                     Clear
                                 </button>
@@ -742,8 +742,8 @@ function setupAvatarControls() {
         console.log("🎮 Button clicked:", action, "Current zoom:", avatarState.zoom);
         
         // Visual feedback
-        button.css("transform", "scale(0.9)");
-        setTimeout(() => button.css("transform", "scale(1)"), 100);
+        button.addClass("btn-pressed");
+        setTimeout(() => button.removeClass("btn-pressed"), 100);
         
         switch(action) {
             case "zoom-in":
@@ -808,19 +808,9 @@ function setupWardrobeMainPanelControls() {
         // Update avatar outfit
         avatarState.currentOutfit[category] = item;
         
-        // Visual feedback
-        $(".clothing-item").removeClass("selected").css({
-            "background": "white",
-            "border-color": "#e0ccd1",
-            "color": "#3a3a3a"
-        });
-        
-        $(this).addClass("selected").css({
-            "background": "linear-gradient(135deg, #d59ca6, #fceef5)",
-            "border-color": "#a4446e",
-            "color": "#a4446e",
-            "transform": "scale(1.02)"
-        });
+        // Visual feedback - CSS classes handle the styling
+        $(".clothing-item").removeClass("selected");
+        $(this).addClass("selected");
         
         updateAvatarOutfit();
     });
@@ -865,16 +855,10 @@ function setupWardrobeMainPanelControls() {
         }
         
         // Visual feedback
-        button.css({
-            "transform": "scale(0.95)",
-            "background": "linear-gradient(135deg, #8b3a5e, #c18b96)"
-        });
+        button.addClass("btn-finish-pressed");
         
         setTimeout(() => {
-            button.css({
-                "transform": "scale(1)",
-                "background": "linear-gradient(135deg, #a4446e, #d59ca6)"
-            });
+            button.removeClass("btn-finish-pressed");
         }, 150);
         
         // Show success message
@@ -1516,6 +1500,136 @@ $(document).on(':passagerender', function () {
     border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 0.8em;
+}
+
+.filter-select {
+    width: 100%;
+    padding: 0.4em;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.8em;
+}
+
+/* ==== LAYOUT CLASSES ==== */
+.avatar-sidebar-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.avatar-display {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.avatar-character {
+    font-size: 6em;
+    filter: drop-shadow(2px 2px 4px var(--shadow-color));
+}
+
+.avatar-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.wardrobe-main-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2em 0;
+}
+
+.text-center {
+    text-align: center;
+    margin: 0 0 2em 0;
+    padding: 0;
+}
+
+.category-container {
+    position: relative;
+    margin-bottom: 1em;
+}
+
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4em;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1em;
+}
+
+.flex-end {
+    display: flex;
+    align-items: end;
+}
+
+.form-modal {
+    display: none;
+}
+
+.flex-end {
+    display: flex;
+    align-items: end;
+}
+
+.form-modal {
+    display: none;
+}
+
+/* ==== CLOTHING ITEM STYLES ==== */
+.clothing-item {
+    background: white;
+    border-color: var(--border-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clothing-item.selected {
+    background: linear-gradient(135deg, var(--primary-hover), var(--background-light));
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: scale(1.02);
+}
+
+.clothing-item.selected {
+    background: linear-gradient(135deg, var(--primary-hover), var(--background-light));
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: scale(1.02);
+}
+
+/* ==== BUTTON INTERACTION STATES ==== */
+.btn-pressed {
+    transform: scale(0.9) !important;
+}
+
+/* ==== BUTTON INTERACTION STATES ==== */
+.btn-pressed {
+    transform: scale(0.9) !important;
+}
+
+.btn-finish-pressed {
+    transform: scale(0.95) !important;
+    background: linear-gradient(135deg, var(--primary-active), var(--secondary-color)) !important;
+}
+
+.form-modal {
+    display: none;
+}
+
+.form-modal.show {
+    display: flex;
 }
 
 /* ==== MAIN LAYOUT ==== */
