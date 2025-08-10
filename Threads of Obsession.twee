@@ -996,7 +996,7 @@ function showClothingOptions(category) {
                 <h3 class="accessories-title">
                     ${categoryNames[category]}
                 </h3>
-                <p style="color: #666; font-size: 1.1em; margin: 0.5em 0 0 0;">Choose a subcategory</p>
+                <p class="subcategory-text">Choose a subcategory</p>
             </div>
         `;
         
@@ -1013,15 +1013,12 @@ function showClothingOptions(category) {
             { id: "legwarmers", name: "Legwarmers", emoji: "🧦" }
         ];
         
-        html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1em;">';
+        html += '<div class="subcategory-grid">';
         
         accessorySubcategories.forEach(subcategory => {
             html += `
-                <button class="subcategory-btn" data-subcategory="${subcategory.id}" 
-                        style="background: white; border: 2px solid #e0ccd1; color: #a4446e; border-radius: 8px; 
-                        padding: 1em; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease;
-                        text-align: center;">
-                    <div style="font-size: 2em; margin-bottom: 0.5em;">${subcategory.emoji}</div>
+                <button class="subcategory-btn" data-subcategory="${subcategory.id}">
+                    <div class="subcategory-emoji">${subcategory.emoji}</div>
                     <div>${subcategory.name}</div>
                 </button>
             `;
@@ -1041,18 +1038,18 @@ function showClothingOptions(category) {
     
     // Regular category display - clean with just header and clothing grid
     let html = `
-        <div style="text-align: center; margin: 2em 0;">
-            <h3 style="color: #a4446e; font-size: 2em; margin: 0;">
+        <div class="category-header">
+            <h3 class="category-title">
                 ${categoryNames[category]}
             </h3>
         </div>
     `;
     
     if (items.length === 0) {
-        html += `<div style="text-align: center; color: #666; font-size: 1.2em; padding: 2em;">No items available in this category</div>`;
+        html += `<div class="no-items">No items available in this category</div>`;
     } else {
         // Grid layout for asset containers - 5 columns with smaller gap
-        html += '<div id="clothing-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6em; padding: 0 1em;">';
+        html += '<div id="clothing-grid" class="clothing-grid">';
         
         items.forEach(item => {
             const isSelected = avatarState.currentOutfit[category] === item.id;
@@ -1592,7 +1589,13 @@ $(document).on(':passagerender', function () {
     box-shadow: 0 4px 12px var(--shadow-color);
 }
 
-.asset-icon {
+.clothing-item:hover:not(.selected) {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px var(--shadow-color);
+    border-color: var(--primary-color);
+}
+
+/* ==== ADDITIONAL LAYOUT CLASSES ==== */
     width: 80%;
     height: 80%;
     background: #f8f8f8;
@@ -1683,6 +1686,60 @@ $(document).on(':passagerender', function () {
     color: var(--primary-color);
     font-size: 2em;
     margin: 0;
+}
+
+/* ==== ADDITIONAL LAYOUT CLASSES ==== */
+.subcategory-text {
+    color: #666;
+    font-size: 1.1em;
+    margin: 0.5em 0 0 0;
+}
+
+.subcategory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1em;
+}
+
+.subcategory-btn {
+    background: white;
+    border: 2px solid var(--border-color);
+    color: var(--primary-color);
+    border-radius: 8px;
+    padding: 1em;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.subcategory-emoji {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+}
+
+.category-header {
+    text-align: center;
+    margin: 2em 0;
+}
+
+.category-title {
+    color: var(--primary-color);
+    font-size: 2em;
+    margin: 0;
+}
+
+.no-items {
+    text-align: center;
+    color: #666;
+    font-size: 1.2em;
+    padding: 2em;
+}
+
+.clothing-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.6em;
+    padding: 0 1em;
 }
 
 /* ==== BUTTON INTERACTION STATES ==== */
@@ -2103,17 +2160,6 @@ tw-link:hover {
     box-shadow: 0 4px 8px rgba(164, 68, 110, 0.3);
 }
 
-.clothing-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(164, 68, 110, 0.2);
-    border-color: #a4446e !important;
-}
-
-.clothing-item.selected:hover {
-    background-color: #d59ca6 !important;
-    border-color: #a4446e !important;
-}
-
 /* Avatar controls repositioned */
 #avatar-sidebar-content #avatar-controls {
     margin-top: auto;
@@ -2169,23 +2215,3 @@ tw-link:hover {
     margin-top: 1em;
 }
 
-#avatar-controls button {
-    text-decoration: none !important;
-}
-
-#avatar-controls button:hover {
-    text-decoration: none !important;
-}
-
-/* ==== CATEGORY BUTTONS - Active state styling ==== */
-.category-btn.active {
-    background: #d59ca6 !important;
-    color: white !important;
-    transform: translateY(-2px) scale(1.05) !important;
-    box-shadow: 0 4px 8px rgba(164, 68, 110, 0.3) !important;
-}
-
-.category-btn.active:hover {
-    background: #d59ca6 !important;
-    color: white !important;
-}
