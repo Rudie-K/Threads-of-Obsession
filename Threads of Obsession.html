@@ -7,21 +7,16 @@
 <meta name="application-name" content="SugarCube" />
 <meta name="version" content="2.37.3" />
 <!--
-
 SugarCube (v2.37.3): A free (gratis and libre) story format.
-
 Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>.
 All rights reserved.
-
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
-
 1. Redistributions of source code must retain the above copyright notice, this
    list of conditions and the following disclaimer.
 2. Redistributions in binary form must reproduce the above copyright notice,
    this list of conditions and the following disclaimer in the documentation
    and/or other materials provided with the distribution.
-
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -32,7 +27,6 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 -->
 <script id="script-libraries" type="text/javascript">
 if(document.head&&document.addEventListener&&document.querySelector&&Object.create&&Object.freeze&&JSON){document.documentElement.setAttribute("data-init", "loading");
@@ -116,7 +110,6 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     --theme-border: #e0ccd1;
     --theme-text: #3a3a3a;
 }
-
 /* ==== MAIN LAYOUT ==== */
 #game-container {
     display: flex;
@@ -128,7 +121,6 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: var(--theme-text);
 }
-
 /* ==== SIDEBAR STRUCTURE ==== */
 #sidebar {
     display: flex;
@@ -138,12 +130,11 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     min-width: 180px;
     max-width: 600px;
     background-color: var(--theme-background);
-    border-right: 3px solid var(--theme-border);
+    border-right: 3px solid #e0ccd1;
     box-sizing: border-box;
     color: var(--theme-text);
     padding: 0;
 }
-
 /* Sidebar image at the very top, fills available vertical space before stats/calendar/footer */
 #sidebar-image-container {
     flex: 1 1 auto;
@@ -154,7 +145,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     display: flex;
     align-items: stretch;
     justify-content: center;
-    background: var(--theme-border);
+    background: #e0ccd1;
     border-radius: 8px 8px 0 0;
     box-sizing: border-box;
 }
@@ -165,7 +156,6 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     display: block;
     border-radius: 8px 8px 0 0;
 }
-
 /* Sidebar main content (stats and calendar side-by-side) */
 #sidebar-content {
     flex: 0 0 auto;
@@ -176,7 +166,6 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     flex-direction: column;
     gap: 1em;
 }
-
 /* Side-by-side row for stats and calendar */
 #stats-calendar-row {
     display: flex;
@@ -191,7 +180,6 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     max-width: 60%;
     /* Additional custom stats styles here */
 }
-
 .stat-row {
     display: flex;
     align-items: center;
@@ -208,14 +196,12 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 .stat-value {
     font-weight: normal;
 }
-
 #calendar-container {
     flex: 0 0 auto;
     max-width: 220px;
     width: 220px;
     min-width: 160px;
 }
-
 /* ==== CALENDAR ==== */
 #calendar-month-label {
     text-align: center;
@@ -267,7 +253,6 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     background: var(--theme-primary);
     color: white;
 }
-
 /* ==== SIDEBAR FOOTER & BUTTONS ==== */
 #sidebar-footer {
     flex: 0 0 auto;
@@ -314,7 +299,6 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 #sidebar-buttons button:hover {
     background-color: var(--theme-secondary);
 }
-
 /* ==== MAIN PANEL ==== */
 #main-panel {
     flex: 2 1 0;
@@ -329,7 +313,6 @@ tw-passage {
     background: transparent;
     box-shadow: none;
 }
-
 /* ==== MODAL FORM ==== */
 #form-modal {
     position: fixed;
@@ -453,7 +436,6 @@ tw-passage {
 #form-modal .modal-content button:hover {
     background-color: var(--theme-secondary);
 }
-
 /* Responsive: stack columns on small screens */
 @media (max-width: 800px) {
     #form-modal .modal-content.two-col {
@@ -471,7 +453,6 @@ tw-passage {
         max-width: none;
     }
 }
-
 /* ==== LINKS, BUTTONS, ETC ==== */
 a,
 button,
@@ -486,13 +467,11 @@ tw-link:hover {
     color: var(--theme-secondary);
     text-decoration: underline;
 }
-
 /* Wardrobe main panel styling */
 #wardrobe-main-content {
     max-width: 800px;
     margin: 0 auto;
 }
-
 .category-btn {
     background: var(--theme-light);
     color: var(--theme-primary);
@@ -510,26 +489,22 @@ tw-link:hover {
     justify-content: center;
     text-decoration: none;
 }
-
 .category-btn:hover {
     background: var(--theme-secondary);
     color: white;
     transform: translateY(-3px) scale(1.02);
     text-decoration: none;
 }
-
 .category-btn.active {
     background: var(--theme-secondary);
     color: white;
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 4px 8px var(--theme-primary-alpha);
 }
-
 .category-btn.active:hover {
     background: var(--theme-secondary);
     color: white;
 }
-
 /* ==== AVATAR CONTROL BUTTONS ==== */
 .avatar-control-btn {
     background: var(--theme-primary);
@@ -543,87 +518,113 @@ tw-link:hover {
     cursor: pointer;
     transition: all 0.2s ease;
 }
-
 .avatar-control-btn:hover {
     background: var(--theme-secondary);
     transform: scale(1.05);
 }
-
+/* ==== CLOTHING ITEM STYLES ==== */
+.clothing-item {
+    background: white;
+    border-color: var(--theme-border);
+    color: var(--theme-text);
+    transition: all 0.3s ease;
+}
+.clothing-item.selected {
+    background: linear-gradient(135deg, var(--theme-secondary), var(--theme-background));
+    border-color: var(--theme-primary);
+    color: var(--theme-primary);
+    transform: scale(1.02);
+}
+/* ==== SUBCATEGORY BUTTONS ==== */
+.subcategory-btn {
+    background: white;
+    border: 2px solid var(--theme-border);
+    color: var(--theme-primary);
+    border-radius: 8px;
+    padding: 1em;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+.subcategory-btn:hover {
+    background: var(--theme-background);
+    border-color: var(--theme-primary);
+    transform: translateY(-2px);
+}
 .clothing-item:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(164, 68, 110, 0.2);
     border-color: var(--theme-primary) !important;
 }
-
 .clothing-item.selected:hover {
     background-color: var(--theme-secondary) !important;
     border-color: var(--theme-primary) !important;
 }
-
 /* Avatar controls repositioned */
 #avatar-sidebar-content #avatar-controls {
     margin-top: auto;
     padding-top: 1em;
 }
-
 /* Ensure avatar container takes remaining space */
 #avatar-sidebar-content {
     height: 100%;
     display: flex;
     flex-direction: column;
 }
-
 #avatar-container {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
 /* Ensure sidebar footer stays at bottom in wardrobe mode */
 #sidebar {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
-
 #sidebar-content {
     flex: 1 1 auto; /* Takes available space */
 }
-
 #sidebar-footer {
     flex: 0 0 auto; /* Fixed size, stays at bottom */
     margin-top: auto; /* Push to bottom */
 }
-
 /* Wardrobe avatar content should fill available space above footer */
 #avatar-sidebar-content {
     height: 100%;
     display: flex;
     flex-direction: column;
 }
-
 #avatar-container {
     flex: 1; /* Takes most space */
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
 #avatar-controls {
     flex: 0 0 auto; /* Fixed size */
     margin-top: 1em;
 }
-
 #avatar-controls button {
     text-decoration: none !important;
 }
-
 #avatar-controls button:hover {
     text-decoration: none !important;
 }
-
-</style><script role="script" id="twine-user-script" type="text/twine-javascript">// ---- DYNAMIC STATS INJECTION ----
+/* ==== CATEGORY BUTTONS - Active state styling ==== */
+.category-btn.active {
+    background: var(--theme-secondary) !important;
+    color: white !important;
+    transform: translateY(-2px) scale(1.05) !important;
+    box-shadow: 0 4px 8px var(--theme-primary-alpha) !important;
+}
+.category-btn.active:hover {
+    background: var(--theme-secondary) !important;
+    color: white !important;
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript">// ---- DYNAMIC STATS INJECTION ----
 function updateStats() {
     const vars = State.variables;
     $('#player-time').text(vars.time || "00:00");
@@ -633,7 +634,6 @@ function updateStats() {
     );
     $('#player-reputation').text(vars.reputation || "");
 }
-
 // Button functionality
 $(document).on('click', '#save-button', function () {
     Save.slots.save();
@@ -641,7 +641,6 @@ $(document).on('click', '#save-button', function () {
 $(document).on('click', '#load-button', function () {
     Dialog.open('load');
 });
-
 // Calendar grid
 function renderSidebarCalendar(month = null) {
     const weekDays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -650,10 +649,8 @@ function renderSidebarCalendar(month = null) {
     const currentYear = today.getFullYear();
     const firstDay = new Date(currentYear, currentMonth, 1);
     const lastDay = new Date(currentYear, currentMonth + 1, 0);
-
     let html = `<div id="calendar-month-label">${firstDay.toLocaleString('default', { month: 'long' })}</div>`;
     html += `<div id="calendar-grid">`;
-
     for(let wd of weekDays){
         html += `<div class="calendar-day-header">${wd}</div>`;
     }
@@ -664,26 +661,21 @@ function renderSidebarCalendar(month = null) {
         html += `<div class="calendar-day" data-day="${d}">${d}</div>`;
     }
     html += `</div>`;
-
     $('#calendar-container').html(html);
-
     $('#calendar-grid').on('click', '.calendar-day', function(){
         const selectedDay = $(this).data('day');
         UI.alert(`You clicked day ${selectedDay}`);
     });
-
     if (today.getMonth() === currentMonth) {
         $(`.calendar-day[data-day="${today.getDate()}"]`).addClass('selected');
     }
 }
-
 // ---- ORIGINAL MODAL FORM LOGIC ----
 const applicantEducation = [
   "High School Dropout",
   "Self-Taught at Tubeiversity",
   "B.S. in Fine Art, Not Your University (NYU)"
 ];
-
 const applicantWork = [
   "Milk Foam Artist (Barista)",
   "Customer Service Consultant, That Guy™ Call Centre",
@@ -691,20 +683,16 @@ const applicantWork = [
   "Creative Director, @ChicInTheory (Etsy)",
   "Freelance Illustrator"
 ];
-
 // Helper function to convert DD/MM input to Date object
 function parseDDMMDate(dateStr) {
 	if (!dateStr) return null;
 	const parts = dateStr.split('/');
 	if (parts.length !== 2) return null;
-	
 	const day = parseInt(parts[0], 10);
 	const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed in Date
 	const currentYear = new Date().getFullYear();
-	
 	return new Date(currentYear, month, day);
 }
-
 // Helper function to convert Date to DD/MM format
 function formatDateToDDMM(date) {
 	if (!date) return '';
@@ -712,13 +700,10 @@ function formatDateToDDMM(date) {
 	const month = (date.getMonth() + 1).toString().padStart(2, '0');
 	return `${day}/${month}`;
 }
-
 window.showFormModal = function() {
 	console.log("🔧 Opening original job application form");
-	
 	const educationHtml = applicantEducation.map(line => `<p>${line}</p>`).join("");
 	const workHtml = `<ul>${applicantWork.map(line => `<li>${line}</li>`).join("")}</ul>`;
-
 	const modalHtml = `
 		<div class="modal-content two-col">
 			<div class="form-col">
@@ -792,21 +777,16 @@ window.showFormModal = function() {
 			</div>
 		</div>
 	`;
-	
 	$("#form-modal").html(modalHtml).css("display", "flex");
-
 	// Add input validation for DD/MM format
 	$("#form-birthday").on("input", function() {
 		let value = $(this).val().replace(/[^\d]/g, ''); // Remove non-digits
-		
 		// Auto-add slash after day
 		if (value.length >= 2) {
 			value = value.substring(0, 2) + '/' + value.substring(2, 4);
 		}
-		
 		$(this).val(value);
 	});
-
 	$("#form-submit").on("click", function() {
 		const name = $("#form-name").val().trim();
 		const birthdayInput = $("#form-birthday").val().trim();
@@ -814,73 +794,59 @@ window.showFormModal = function() {
 		const currency = $("#form-currency").val();
 		const artschool = $("#form-artschool").val();
 		const artstyle = $("#form-artstyle").val();
-
 		if (!name || !birthdayInput || !artschool || !artstyle) {
 			UI.alert("Please complete all required fields.");
 			return;
 		}
-
 		// Validate DD/MM format
 		const datePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])$/;
 		if (!datePattern.test(birthdayInput)) {
 			UI.alert("Please enter birthday in DD/MM format (e.g., 25/12).");
 			return;
 		}
-
 		// Parse the date to ensure it's valid
 		const parsedDate = parseDDMMDate(birthdayInput);
 		if (!parsedDate || isNaN(parsedDate.getTime())) {
 			UI.alert("Please enter a valid date in DD/MM format.");
 			return;
 		}
-
 		State.variables.name = name;
 		State.variables.birthday = birthdayInput; // Store in DD/MM format
 		State.variables.gender = gender;
 		State.variables.currency = currency;
 		State.variables.artschool = artschool;
 		State.variables.artstyle = artstyle;
-
 		console.log("🔧 Character data saved from job application:", {
 			name, birthday: birthdayInput, gender, currency, artschool, artstyle
 		});
-
 		$("#form-modal").hide();
 		Engine.play("Get Ready");
 	});
-	
 	console.log("🔧 Job application form opened successfully");
 };
-
 // ---- IMPROVED PASSAGE DETECTION ----
 function getCurrentPassageTitle() {
     if (typeof State !== "undefined" && State.passage && State.passage.title) {
         return State.passage.title;
     }
-    
     if (typeof passage !== "undefined" && passage && passage.title) {
         return passage.title;
     }
-    
     if (typeof Engine !== "undefined" && Engine.state && Engine.state.active && Engine.state.active.title) {
         return Engine.state.active.title;
     }
-    
     const activePassage = $('tw-passage[data-passage]');
     if (activePassage.length > 0) {
         return activePassage.attr('data-passage');
     }
-    
     if (typeof State !== "undefined" && State.history && State.history.length > 0) {
         const lastEntry = State.history[State.history.length - 1];
         if (lastEntry && lastEntry.title) {
             return lastEntry.title;
         }
     }
-    
     return "UNKNOWN";
 }
-
 // ---- WARDROBE AVATAR SYSTEM ----
 let avatarState = {
     zoom: 1.0,
@@ -897,11 +863,9 @@ let avatarState = {
         accessories: {}
     }
 };
-
 // Avatar display update function
 function updateAvatarDisplay() {
     console.log("🔄 Updating avatar display with current outfit:", avatarState.currentOutfit);
-    
     // Update the avatar character display
     const avatarCharacter = $("#avatar-character");
     if (avatarCharacter.length > 0) {
@@ -910,7 +874,6 @@ function updateAvatarDisplay() {
             "transform": `scale(${avatarState.zoom}) rotate(${avatarState.rotation}deg)`,
             "filter": "drop-shadow(2px 2px 4px var(--theme-primary-alpha))"
         });
-        
         // Add a subtle pulse effect to show something changed
         avatarCharacter.animate({
             opacity: 0.7
@@ -918,25 +881,19 @@ function updateAvatarDisplay() {
             opacity: 1
         }, 100);
     }
-    
     console.log("✅ Avatar display updated");
 }
-
 function renderWardrobeSidebar() {
     console.log("🎨 Rendering wardrobe sidebar");
-    
     const imageContainer = $("#sidebar-image-container");
     const sidebarContent = $("#sidebar-content");
     const sidebarFooter = $("#sidebar-footer");
-    
     if (imageContainer.length === 0 || sidebarContent.length === 0) {
         console.error("Required elements not found!");
         return;
     }
-    
     // Hide the location image
     imageContainer.hide();
-    
     // Create the wardrobe sidebar with clean avatar display
     sidebarContent.html(`
         <div id="avatar-sidebar-content" style="height: 100%; display: flex; flex-direction: column;">
@@ -953,7 +910,6 @@ function renderWardrobeSidebar() {
             </div>
         </div>
     `);
-    
     // Ensure the sidebar footer maintains exact same settings
     if (sidebarFooter.length > 0) {
         sidebarFooter.show().css({
@@ -961,7 +917,6 @@ function renderWardrobeSidebar() {
             'display': 'block',
             'margin-top': 'auto'
         });
-        
         if (sidebarFooter.find('#options-button').length === 0) {
             sidebarFooter.html(`
                 <div id="sidebar-options">
@@ -974,19 +929,15 @@ function renderWardrobeSidebar() {
             `);
         }
     }
-    
     // Set up avatar controls AFTER creating the HTML
     setTimeout(function() {
         setupAvatarControls();
         console.log("🎮 Avatar controls setup complete");
     }, 100);
-    
     // Inject wardrobe categories into main panel
     injectWardrobeMainPanel();
-    
     console.log("🎨 Clean wardrobe sidebar ready");
 }
-
 function injectWardrobeMainPanel() {
     setTimeout(function() {
         const mainPanel = $("#main-panel");
@@ -994,7 +945,6 @@ function injectWardrobeMainPanel() {
             console.error("Main panel not found for wardrobe categories");
             return;
         }
-        
         const wardrobeMainContent = `
     <style>
         #main-panel {
@@ -1023,6 +973,17 @@ function injectWardrobeMainPanel() {
         #category-buttons {
             flex-shrink: 0;
         }
+        .category-btn {
+            background: var(--theme-light) !important;
+            color: var(--theme-primary) !important;
+            text-decoration: none !important;
+        }
+        .category-btn:hover {
+            background: var(--theme-secondary) !important;
+            color: white !important;
+            transform: scale(1.1);
+            text-decoration: none !important;
+        }
         .side-btn {
             background: var(--theme-primary) !important;
             color: white !important;
@@ -1039,12 +1000,9 @@ function injectWardrobeMainPanel() {
                 <div style="text-align: center; margin: 0; padding: 0; margin-bottom: 2em;">
                     <h1 style="color: var(--theme-primary); margin: 0; padding: 0; font-size: 2.5em;">Your Wardrobe</h1>
                 </div>
-                
                 <div id="wardrobe-categories" style="background: var(--theme-background); border-radius: 12px; border: 2px solid #e0ccd1; padding: 2em; box-shadow: 0 4px 12px rgba(224, 204, 209, 0.2);">
-                    
                     <!-- Category Buttons Row with Side Buttons -->
                     <div style="position: relative; margin-bottom: 1em;">
-                        
                         <!-- ORIGINAL Category Buttons Layout - Unchanged -->
                         <div id="category-buttons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4em;">
                             <button class="category-btn" data-category="inner" title="Inner">
@@ -1075,22 +1033,18 @@ function injectWardrobeMainPanel() {
                                 ✨
                             </button>
                         </div>
-                        
                         <!-- Filter Button - No icons, clean text -->
                         <button id="toggle-filters" class="side-btn" style="position: absolute; left: 0; bottom: 0; background: var(--theme-primary); color: white; border: none; border-radius: 8px; width: 80px; height: 30px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; display: flex; align-items: center; justify-content: center; text-decoration: none; transform: none;">
                             Filters
                         </button>
-                        
                         <!-- Finish Button - No icons, clean text -->
                         <button id="finish-outfit" class="side-btn" style="position: absolute; right: 0; bottom: 0; background: var(--theme-primary); color: white; border: none; border-radius: 8px; width: 80px; height: 30px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; display: flex; align-items: center; justify-content: center; text-decoration: none; transform: none;">
                             Finish
                         </button>
                     </div>
-                    
                     <!-- Filter Panel with Silhouette Filter -->
                     <div id="filter-panel" style="background: white; border: 2px solid #e0ccd1; border-radius: 8px; z-index: 100; display: none; margin-bottom: 1em; padding: 1em; box-shadow: 0 4px 12px var(--theme-primary-alpha);">
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1em;">
-                            
                             <!-- Style Filter -->
                             <div>
                                 <label style="color: var(--theme-primary); font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Style:</label>
@@ -1112,7 +1066,6 @@ function injectWardrobeMainPanel() {
                                     <option value="y2k">Y2K</option>
                                 </select>
                             </div>
-                            
                             <!-- Price Filter -->
                             <div>
                                 <label style="color: var(--theme-primary); font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Price:</label>
@@ -1124,7 +1077,6 @@ function injectWardrobeMainPanel() {
                                     <option value="100-999">Over £100</option>
                                 </select>
                             </div>
-                            
                             <!-- Brand Filter -->
                             <div>
                                 <label style="color: var(--theme-primary); font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Brand:</label>
@@ -1154,7 +1106,6 @@ function injectWardrobeMainPanel() {
                                     <option value="Luxe Steps">Luxe Steps</option>
                                 </select>
                             </div>
-                            
                             <!-- Silhouette Filter -->
                             <div>
                                 <label style="color: var(--theme-primary); font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Silhouette:</label>
@@ -1194,7 +1145,6 @@ function injectWardrobeMainPanel() {
                                     <option value="platform-boots">Platform Boots</option>
                                 </select>
                             </div>
-                            
                             <!-- Clear Filters -->
                             <div style="display: flex; align-items: end;">
                                 <button id="clear-filters" style="background: var(--theme-secondary); color: white; border: none; border-radius: 4px; padding: 0.4em 0.8em; cursor: pointer; font-size: 0.8em; width: 100%;">
@@ -1203,7 +1153,6 @@ function injectWardrobeMainPanel() {
                             </div>
                         </div>
                     </div>
-                    
                     <div id="clothing-options" style="min-height: 300px; background: white; border-radius: 8px; padding: 0 2em 2em 2em; border: 1px solid #e0ccd1; position: relative;">
                         <div style="text-align: center; color: #999; font-size: 1.2em; padding: 3em 1em;">
                             <div>Select a category above to view clothing options</div>
@@ -1212,43 +1161,33 @@ function injectWardrobeMainPanel() {
                 </div>
             </div>
         `;
-        
         const passageContent = mainPanel.find('tw-passage');
         if (passageContent.length > 0) {
             passageContent.append(wardrobeMainContent);
         } else {
             mainPanel.append(wardrobeMainContent);
         }
-        
         setupWardrobeMainPanelControls();
-        
     }, 50);
 }
-
 function setupAvatarControls() {
     console.log("🎮 Setting up avatar controls...");
-    
     // Clear any existing handlers
     $("#avatar-controls").off("click");
-    
     // Check if buttons exist
     const buttons = $("#avatar-controls button");
     console.log("🔍 Found", buttons.length, "avatar control buttons");
     buttons.each(function() {
         console.log("🔍 Button ID:", $(this).attr("id"));
     });
-    
     $("#avatar-controls").on("click", "button", function(e) {
         e.preventDefault();
         const action = $(this).attr("id");
         const button = $(this);
-        
         console.log("🎮 Button clicked:", action, "Current zoom:", avatarState.zoom);
-        
         // Visual feedback
         button.css("transform", "scale(0.9)");
         setTimeout(() => button.css("transform", "scale(1)"), 100);
-        
         switch(action) {
             case "zoom-in":
                 console.log("🔍 Zoom in triggered, current:", avatarState.zoom);
@@ -1286,7 +1225,6 @@ function setupAvatarControls() {
                 console.log("❌ Unknown action:", action);
         }
     });
-    
     // Hover effects for avatar controls
     $("#avatar-controls button").on("mouseenter", function() {
         console.log("🎮 Hover on button:", $(this).attr("id"));
@@ -1294,14 +1232,11 @@ function setupAvatarControls() {
     }).on("mouseleave", function() {
         $(this).css("background", "var(--theme-primary)");
     });
-    
     console.log("🎮 Avatar controls event handlers attached");
 }
-
 function setupWardrobeMainPanelControls() {
     $("#category-buttons").off("click");
     $("#clothing-options").off("click");
-    
     // Category button hover effects
     $(".category-btn").on("mouseenter", function() {
         if (!$(this).hasClass("active")) {
@@ -1312,55 +1247,44 @@ function setupWardrobeMainPanelControls() {
             $(this).css("transform", "translateY(0) scale(1)");
         }
     });
-    
     $("#category-buttons").on("click", ".category-btn", function(e) {
         e.preventDefault();
         const category = $(this).data("category");
-        
         // Update button states
         $(".category-btn").removeClass("active").css({
             "background": "linear-gradient(135deg, var(--theme-primary), var(--theme-secondary))",
             "transform": "translateY(0) scale(1)"
         });
-        
         $(this).addClass("active").css({
             "background": "linear-gradient(135deg, var(--theme-primary-dark), var(--theme-secondary-dark))",
             "transform": "translateY(-2px) scale(1.05)"
         });
-        
         showClothingOptions(category);
     });
-    
     $("#clothing-options").on("click", ".clothing-item", function(e) {
         e.preventDefault();
         const item = $(this).data("item");
         const category = $(this).data("category");
-        
         // Update avatar outfit
         avatarState.currentOutfit[category] = item;
-        
         // Visual feedback
         $(".clothing-item").removeClass("selected").css({
             "background": "white",
             "border-color": "#e0ccd1",
             "color": "var(--theme-text)"
         });
-        
         $(this).addClass("selected").css({
             "background": "linear-gradient(135deg, var(--theme-secondary), var(--theme-background))",
             "border-color": "var(--theme-primary)",
             "color": "var(--theme-primary)",
             "transform": "scale(1.02)"
         });
-        
         updateAvatarOutfit();
     });
-    
     // Set up filter toggle - FIXED: No icons, clean text only
     $("#toggle-filters").on("click", function(e) {
         e.preventDefault();
         const filterPanel = $("#filter-panel");
-        
         if (filterPanel.is(":visible")) {
             filterPanel.slideUp(200);
             $(this).text("Filters");
@@ -1369,45 +1293,37 @@ function setupWardrobeMainPanelControls() {
             $(this).text("Hide");
         }
     });
-    
     // Filter functionality
     $("#style-filter, #price-filter, #brand-filter, #silhouette-filter").on("change", function() {
         applyFilters();
     });
-    
     // Clear filters
     $("#clear-filters").on("click", function() {
     	$("#style-filter, #price-filter, #brand-filter, #silhouette-filter").val("");
         applyFilters();
-        
         // Visual feedback
         $(this).css("transform", "scale(0.95)");
         setTimeout(() => $(this).css("transform", "scale(1)"), 150);
     });
-    
     // Set up finish button
     $("#finish-outfit").on("click", function() {
         const button = $(this);
-        
         // Save outfit to game state
         if (typeof State !== "undefined" && State.variables) {
             State.variables.currentOutfit = {...avatarState.currentOutfit};
             console.log("💾 Outfit saved to game state:", State.variables.currentOutfit);
         }
-        
         // Visual feedback
         button.css({
             "transform": "scale(0.95)",
             "background": "linear-gradient(135deg, var(--theme-primary-dark), var(--theme-secondary-dark))"
         });
-        
         setTimeout(() => {
             button.css({
                 "transform": "scale(1)",
                 "background": "linear-gradient(135deg, var(--theme-primary), var(--theme-secondary))"
             });
         }, 150);
-        
         // Show success message
         const successMessage = `
             <div id="outfit-success" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
@@ -1422,7 +1338,6 @@ function setupWardrobeMainPanelControls() {
                     Perfect!
                 </button>
             </div>
-            
             <style>
             @keyframes successPulse {
                 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
@@ -1431,13 +1346,10 @@ function setupWardrobeMainPanelControls() {
             }
             </style>
         `;
-        
         $("body").append(successMessage);
-        
         $("#close-success").on("click", function() {
             $("#outfit-success").remove();
         });
-        
         // Auto-close after 3 seconds
         setTimeout(() => {
             $("#outfit-success").fadeOut(300, function() {
@@ -1446,18 +1358,15 @@ function setupWardrobeMainPanelControls() {
         }, 3000);
     });
 }
-
 function updateAvatarTransform() {
     console.log("🎯 Updating avatar transform - Zoom:", avatarState.zoom, "Rotation:", avatarState.rotation);
     $("#avatar-display").css("transform", `scale(${avatarState.zoom}) rotate(${avatarState.rotation}deg)`);
 }
-
 function updateAvatarOutfit() {
     // Avatar display is now clean - no text to update
     // The outfit information is only shown in the main panel
     console.log("🎨 Avatar updated (display is clean)");
 }
-
 function showClothingOptions(category) {
     const clothingData = {
         inner: [
@@ -1515,7 +1424,6 @@ function showClothingOptions(category) {
             { id: "statement-belt", name: "Chain Link Belt", brand: "Rebel Style", style: "edge", description: "Heavy metal chain belt that demands attention", price: 60 }
         ]
     };
-    
     const items = clothingData[category] || [];
     const categoryNames = {
         inner: "Inner",
@@ -1528,7 +1436,6 @@ function showClothingOptions(category) {
         shoes: "Shoes",
         accessories: "Accessories"
     };
-    
     // Handle accessories subcategories
     if (category === "accessories") {
         let html = `
@@ -1539,7 +1446,6 @@ function showClothingOptions(category) {
                 <p style="color: #666; font-size: 1.1em; margin: 0.5em 0 0 0;">Choose a subcategory</p>
             </div>
         `;
-        
         const accessorySubcategories = [
             { id: "gloves", name: "Gloves", emoji: "🧤" },
             { id: "bracelets", name: "Bracelets", emoji: "📿" },
@@ -1552,9 +1458,7 @@ function showClothingOptions(category) {
             { id: "anklets", name: "Anklets", emoji: "🦶" },
             { id: "legwarmers", name: "Legwarmers", emoji: "🧦" }
         ];
-        
         html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1em;">';
-        
         accessorySubcategories.forEach(subcategory => {
             html += `
                 <button class="subcategory-btn" data-subcategory="${subcategory.id}" 
@@ -1566,19 +1470,15 @@ function showClothingOptions(category) {
                 </button>
             `;
         });
-        
         html += '</div>';
         $("#clothing-options").html(html);
-        
         $(".subcategory-btn").on("click", function(e) {
             e.preventDefault();
             const subcategory = $(this).data("subcategory");
             showAccessorySubcategory(subcategory);
         });
-        
         return;
     }
-    
     // Regular category display - clean with just header and clothing grid
     let html = `
         <div style="text-align: center; margin: 2em 0;">
@@ -1587,16 +1487,13 @@ function showClothingOptions(category) {
             </h3>
         </div>
     `;
-    
     if (items.length === 0) {
         html += `<div style="text-align: center; color: #666; font-size: 1.2em; padding: 2em;">No items available in this category</div>`;
     } else {
         // Grid layout for asset containers - 5 columns with smaller gap
         html += '<div id="clothing-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6em; padding: 0 1em;">';
-        
         items.forEach(item => {
             const isSelected = avatarState.currentOutfit[category] === item.id;
-            
             html += `
                 <div class="clothing-item ${isSelected ? 'selected' : ''}" 
                      data-item="${item.id}" data-category="${category}"
@@ -1609,25 +1506,19 @@ function showClothingOptions(category) {
                      transition: all 0.3s ease; 
                      box-shadow: ${isSelected ? '0 4px 12px rgba(164, 68, 110, 0.4)' : '0 2px 8px rgba(224, 204, 209, 0.2)'};
                      ${isSelected ? 'transform: scale(1.05);' : ''}">
-                     
                     <div class="asset-icon" style="width: 80%; height: 80%; background: #f8f8f8; border-radius: 8px; 
                          display: flex; align-items: center; justify-content: center;
                          border: 2px dashed #ddd; position: relative;">
-    
                     <div style="font-size: 0.7em; color: #aaa; text-align: center; line-height: 1.2;">
                         ${item.id}
                     </div>
-                    
                 </div>
             </div>
         `;
     });
-    
     html += '</div>';
 }
-    
     $("#clothing-options").html(html);
-    
     // Click handlers for clothing items
     $(".clothing-item").on("click", function(e) {
         e.preventDefault();
@@ -1637,18 +1528,14 @@ function showClothingOptions(category) {
         const itemBrand = $item.data("brand");
         const itemDescription = $item.data("description");
         const category = $item.data("category");
-        
         avatarState.currentOutfit[category] = itemId;
         updateAvatarDisplay();
-        
         $("#avatar-bottom-overlay").remove();
-        
         const avatarContainer = $("#avatar-container");
         if (avatarContainer.length) {
             const containerOffset = avatarContainer.offset();
             const containerWidth = avatarContainer.outerWidth();
             const containerHeight = avatarContainer.outerHeight();
-            
             const bottomOverlay = `
                 <div id="avatar-bottom-overlay" style="position: fixed; 
                      left: ${containerOffset.left}px; 
@@ -1665,15 +1552,12 @@ function showClothingOptions(category) {
                      box-shadow: 0 -4px 12px var(--theme-primary-alpha);
                      animation: slideUpOverlay 0.3s ease-out;
                      box-sizing: border-box;">
-                    
                     <div style="display: flex; align-items: center; gap: 1em; width: 100%;">
-                        
                         <div style="width: 60px; height: 60px; background: #f8f8f8; border-radius: 8px; 
                              border: 2px dashed #ddd; display: flex; align-items: center; justify-content: center; 
                              flex-shrink: 0;">
                             <span style="font-size: 0.7em; color: #aaa;">${itemId}</span>
                         </div>
-                        
                         <div style="flex: 1; min-width: 0;">
                             <h4 style="color: var(--theme-primary); margin: 0 0 0.2em 0; font-size: 1.1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${itemName}</h4>
                             <div style="color: var(--theme-secondary); font-weight: bold; font-size: 0.9em; margin-bottom: 0.3em;">${itemBrand}</div>
@@ -1681,7 +1565,6 @@ function showClothingOptions(category) {
                         </div>
                     </div>
                 </div>
-                
                 <style>
                 @keyframes slideUpOverlay {
                     from {
@@ -1695,13 +1578,10 @@ function showClothingOptions(category) {
                 }
                 </style>
             `;
-            
             $("body").append(bottomOverlay);
         }
-        
         showClothingOptions(category);
     });
-    
     // Hover effects for clothing items
     $(".clothing-item").on("mouseenter", function() {
         if (!$(this).hasClass("selected")) {
@@ -1719,7 +1599,6 @@ function showClothingOptions(category) {
         }
     });
 }
-
 function showAccessorySubcategory(subcategory) {
     const html = `
         <div style="text-align: center; padding: 3em;">
@@ -1735,30 +1614,24 @@ function showAccessorySubcategory(subcategory) {
     `;
     $("#clothing-options").html(html);
 }
-
 // Filter function
 function applyFilters() {
   	const silhouetteFilter = $("#silhouette-filter").val();
   	const brandFilter = $("#brand-filter").val();
     const styleFilter = $("#style-filter").val();
     const priceFilter = $("#price-filter").val();
-    
     let visibleCount = 0;
-    
     $(".clothing-item").each(function() {
         const $item = $(this);
         const itemStyle = $item.data("style");
         const itemPrice = $item.data("price");
         const itemBrand = $item.data("brand");
         const itemId = $item.data("item");
-        
         let show = true;
-        
         // Style filter
         if (styleFilter && itemStyle !== styleFilter) {
             show = false;
         }
-        
         // Price filter
         if (priceFilter && show) {
             const [min, max] = priceFilter.split("-").map(Number);
@@ -1766,17 +1639,14 @@ function applyFilters() {
                 show = false;
             }
         }
-        
         // Brand filter
         if (brandFilter && itemBrand !== brandFilter) {
             show = false;
         }
-        
         // Silhouette filter
         if (silhouetteFilter && itemId !== silhouetteFilter) {
             show = false;
         }
-        
         if (show) {
             $item.show();
             visibleCount++;
@@ -1784,7 +1654,6 @@ function applyFilters() {
             $item.hide();
         }
     });
-    
     // Show/hide no results message
     if (visibleCount === 0) {
         if ($("#no-results").length === 0) {
@@ -1798,18 +1667,14 @@ function applyFilters() {
         $("#no-results").remove();
     }
 }
-
 function restoreNormalSidebar() {
     const imageContainer = $("#sidebar-image-container");
     const sidebarContent = $("#sidebar-content");
     const sidebarFooter = $("#sidebar-footer");
-    
     if (imageContainer.length === 0 || sidebarContent.length === 0) {
         return;
     }
-    
     imageContainer.show();
-    
     sidebarContent.html(`
         <div id="stats-calendar-row">
             <div id="player-stats">
@@ -1826,7 +1691,6 @@ function restoreNormalSidebar() {
             <div id="calendar-container"></div>
         </div>
     `);
-    
     // Maintain exact same footer settings as wardrobe
     if (sidebarFooter.length > 0) {
         sidebarFooter.show().css({
@@ -1834,7 +1698,6 @@ function restoreNormalSidebar() {
             'display': 'block',
             'margin-top': 'auto'
         });
-        
         if (sidebarFooter.find('#options-button').length === 0) {
             sidebarFooter.html(`
                 <div id="sidebar-options">
@@ -1847,24 +1710,19 @@ function restoreNormalSidebar() {
             `);
         }
     }
-    
     if (typeof updateStats === "function") updateStats();
     if (typeof renderSidebarCalendar === "function") renderSidebarCalendar();
 }
-
 function wardrobeSidebarManager() {
     const passageTitle = getCurrentPassageTitle();
-    
     if (passageTitle === "Wardrobe") {
         renderWardrobeSidebar();
     } else {
         restoreNormalSidebar();
     }
 }
-
 // ---- EVENT HANDLERS ----
 $(document).off(':passagerender :storyready');
-
 $(document).on(':storyready', function () {
     updateStats();
     renderSidebarCalendar();
@@ -1872,7 +1730,6 @@ $(document).on(':storyready', function () {
         wardrobeSidebarManager();
     }, 10);
 });
-
 $(document).on(':passagerender', function () {
     setTimeout(function() {
         updateStats();
@@ -1881,32 +1738,20 @@ $(document).on(':passagerender', function () {
     }, 10);
 });</script><tw-passagedata pid="1" name="Start" tags="" position="250,150" size="100,100">
 You wake up face-down in your sketchbook, last nights graphic design ruined by makeup smears and drool. 
-
 The studio apartment smells like your roommates eggs again and the room divider doesn&#39;t block out the ambient screaming they play to fall asleep.
-
 Your phone buzzes like it&#39;s mad at you. You squint at the blinding screen:
-
 **TODAY: INTERVIEW – 10:00 AM**
-
 Below it: “Don’t forget the paperwork! Ms. Matel *insists* on pen and paper. Retro vibes or whatever.”
-
 Your heart sinks.
-
 You never filled out the form!
-
 &lt;&lt;link &quot;Fill Form&quot;&gt;&gt;
     &lt;&lt;run showFormModal()&gt;&gt;
 &lt;&lt;/link&gt;&gt;
-
 	**Test Links
 [[Wardrobe]] </tw-passagedata><tw-passagedata pid="2" name="Get Ready" tags="" position="375,150" size="100,100">
 You finish the form just in time to realise you&#39;re going to be late, and you look... well, plain awful.
-
 Your wardrobe is mostly thrifted college castoffs and hand-me-downs. Nothing screams &quot;boutique employee&quot;—or even &quot;employable human.&quot;
-
-
 You could [[beg your roommate for fashion money (and owe them)-&gt;RoommateHelp]] 
-
 Or [[dig through the mess and style something from your graveyard closet-&gt;Wardrobe]]</tw-passagedata><tw-passagedata pid="3" name="StoryInit" tags="" position="250,25" size="100,100">:: StoryInit
 &lt;&lt;set $time to &quot;09:30&quot;&gt;&gt;
 &lt;&lt;set $money to 25&gt;&gt;
