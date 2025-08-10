@@ -100,7 +100,7 @@ You never filled out the form!
   </div>
 </div>
 <!-- Modal container, always present: -->
-<div id="form-modal" style="display:none;"></div>
+<div id="form-modal" class="form-modal"></div>
 
 
 :: Wardrobe {"position":"450,275","size":"100,100"}
@@ -278,7 +278,7 @@ window.showFormModal = function() {
 		</div>
 	`;
 	
-	$("#form-modal").html(modalHtml).css("display", "flex");
+	$("#form-modal").html(modalHtml).addClass("show");
 
 	// Add input validation for DD/MM format
 	$("#form-birthday").on("input", function() {
@@ -424,17 +424,17 @@ function renderWardrobeSidebar() {
     
     // Create the wardrobe sidebar with clean avatar display
     sidebarContent.html(`
-        <div id="avatar-sidebar-content" style="height: 100%; display: flex; flex-direction: column;">
-            <div id="avatar-container" style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 300px; background: #fffdfb; border-radius: 8px; margin-bottom: 0; border: 2px solid #e0ccd1; position: relative;">
-                <div id="avatar-display" style="width: 90%; height: 90%; display: flex; align-items: center; justify-content: center; transform: scale(${avatarState.zoom}) rotate(${avatarState.rotation}deg); transition: all 0.3s ease;">
-                    <div id="avatar-character" style="font-size: 6em; filter: drop-shadow(2px 2px 4px rgba(164, 68, 110, 0.3));">👤</div>
+        <div id="avatar-sidebar-content" class="avatar-sidebar-content">
+            <div id="avatar-container" class="avatar-container">
+                <div id="avatar-display" class="avatar-display" style="transform: scale(${avatarState.zoom}) rotate(${avatarState.rotation}deg);">
+                    <div id="avatar-character" class="avatar-character">👤</div>
                 </div>
             </div>
-            <div id="avatar-controls" style="display: flex; justify-content: center; gap: 0.5em; margin-bottom: 0.5em;">
-                <button id="zoom-in" title="Zoom In" style="background: #a4446e; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.2s ease;">+</button>
-                <button id="zoom-out" title="Zoom Out" style="background: #a4446e; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.2s ease;">−</button>
-                <button id="rotate-left" title="Rotate Left" style="background: #a4446e; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.2s ease;">↺</button>
-                <button id="rotate-right" title="Rotate Right" style="background: #a4446e; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.2s ease;">↻</button>
+            <div id="avatar-controls" class="avatar-controls">
+                <button id="zoom-in" title="Zoom In" class="btn-primary btn-round-40">+</button>
+                <button id="zoom-out" title="Zoom Out" class="btn-primary btn-round-40">−</button>
+                <button id="rotate-left" title="Rotate Left" class="btn-primary btn-round-40">↺</button>
+                <button id="rotate-right" title="Rotate Right" class="btn-primary btn-round-40">↻</button>
             </div>
         </div>
     `);
@@ -531,66 +531,66 @@ function injectWardrobeMainPanel() {
             transform: none !important;
         }
     </style>
-    <div id="wardrobe-main-content" style="max-width: 900px; margin: 0 auto; padding: 0; padding-top: 2em; padding-bottom: 2em;">
-                <div style="text-align: center; margin: 0; padding: 0; margin-bottom: 2em;">
-                    <h1 style="color: #a4446e; margin: 0; padding: 0; font-size: 2.5em;">Your Wardrobe</h1>
+    <div id="wardrobe-main-content" class="wardrobe-main-content">
+                <div class="text-center">
+                    <h1 class="wardrobe-title">Your Wardrobe</h1>
                 </div>
                 
-                <div id="wardrobe-categories" style="background: #fceef5; border-radius: 12px; border: 2px solid #e0ccd1; padding: 2em; box-shadow: 0 4px 12px rgba(224, 204, 209, 0.2);">
+                <div id="wardrobe-categories" class="wardrobe-categories">
                     
                     <!-- Category Buttons Row with Side Buttons -->
-                    <div style="position: relative; margin-bottom: 1em;">
+                    <div class="category-container">
                         
                         <!-- ORIGINAL Category Buttons Layout - Unchanged -->
-                        <div id="category-buttons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4em;">
-                            <button class="category-btn" data-category="inner" title="Inner" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                        <div id="category-buttons" class="category-buttons">
+                            <button class="category-btn btn-category btn-round-30" data-category="inner" title="Inner">
                                 👙
                             </button>
-                            <button class="category-btn" data-category="tops" title="Tops" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn btn-category btn-round-30" data-category="tops" title="Tops">
                                 👕
                             </button>
-                            <button class="category-btn" data-category="outer" title="Outer" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn btn-category btn-round-30" data-category="outer" title="Outer">
                                 🧥
                             </button>
-                            <button class="category-btn" data-category="bottoms" title="Bottoms" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn btn-category btn-round-30" data-category="bottoms" title="Bottoms">
                                 👖
                             </button>
-                            <button class="category-btn" data-category="skirts" title="Skirts" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn btn-category btn-round-30" data-category="skirts" title="Skirts">
                                 👗
                             </button>
-                            <button class="category-btn" data-category="dress" title="Dress" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn btn-category btn-round-30" data-category="dress" title="Dress">
                                 👔
                             </button>
-                            <button class="category-btn" data-category="hosiery" title="Hosiery" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn btn-category btn-round-30" data-category="hosiery" title="Hosiery">
                                 🧦
                             </button>
-                            <button class="category-btn" data-category="shoes" title="Shoes" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn btn-category btn-round-30" data-category="shoes" title="Shoes">
                                 👠
                             </button>
-                            <button class="category-btn" data-category="accessories" title="Accessories" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn btn-category btn-round-30" data-category="accessories" title="Accessories">
                                 ✨
                             </button>
                         </div>
                         
                         <!-- Filter Button - No icons, clean text -->
-                        <button id="toggle-filters" class="side-btn" style="position: absolute; left: 0; bottom: 0; background: #a4446e; color: white; border: none; border-radius: 8px; width: 80px; height: 30px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; display: flex; align-items: center; justify-content: center; text-decoration: none; transform: none;">
+                        <button id="toggle-filters" class="side-btn left">
                             Filters
                         </button>
                         
                         <!-- Finish Button - No icons, clean text -->
-                        <button id="finish-outfit" class="side-btn" style="position: absolute; right: 0; bottom: 0; background: #a4446e; color: white; border: none; border-radius: 8px; width: 80px; height: 30px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; display: flex; align-items: center; justify-content: center; text-decoration: none; transform: none;">
+                        <button id="finish-outfit" class="side-btn right">
                             Finish
                         </button>
                     </div>
                     
                     <!-- Filter Panel with Silhouette Filter -->
-                    <div id="filter-panel" style="background: white; border: 2px solid #e0ccd1; border-radius: 8px; z-index: 100; display: none; margin-bottom: 1em; padding: 1em; box-shadow: 0 4px 12px rgba(164, 68, 110, 0.3);">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1em;">
+                    <div id="filter-panel" class="filter-panel">
+                        <div class="filter-grid">
                             
                             <!-- Style Filter -->
                             <div>
-                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Style:</label>
-                                <select id="style-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
+                                <label class="filter-label">Style:</label>
+                                <select id="style-filter" class="filter-select">
                                     <option value="">All Styles</option>
                                     <option value="luxury">Luxury</option>
                                     <option value="edge">Edge</option>
@@ -611,8 +611,8 @@ function injectWardrobeMainPanel() {
                             
                             <!-- Price Filter -->
                             <div>
-                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Price:</label>
-                                <select id="price-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
+                                <label class="filter-label">Price:</label>
+                                <select id="price-filter" class="filter-select">
                                     <option value="">All Prices</option>
                                     <option value="0-30">Under £30</option>
                                     <option value="30-60">£30 - £60</option>
@@ -623,8 +623,8 @@ function injectWardrobeMainPanel() {
                             
                             <!-- Brand Filter -->
                             <div>
-                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Brand:</label>
-                                <select id="brand-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
+                                <label class="filter-label">Brand:</label>
+                                <select id="brand-filter" class="filter-select">
                                     <option value="">All Brands</option>
                                     <option value="Delicate Dreams">Delicate Dreams</option>
                                     <option value="Minimalist">Minimalist</option>
@@ -653,8 +653,8 @@ function injectWardrobeMainPanel() {
                             
                             <!-- Silhouette Filter -->
                             <div>
-                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Silhouette:</label>
-                                <select id="silhouette-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
+                                <label class="filter-label">Silhouette:</label>
+                                <select id="silhouette-filter" class="filter-select">
                                     <option value="">All Silhouettes</option>
                                     <option value="bralette">Bralette</option>
                                     <option value="bandeau">Bandeau</option>
@@ -692,16 +692,16 @@ function injectWardrobeMainPanel() {
                             </div>
                             
                             <!-- Clear Filters -->
-                            <div style="display: flex; align-items: end;">
-                                <button id="clear-filters" style="background: #d59ca6; color: white; border: none; border-radius: 4px; padding: 0.4em 0.8em; cursor: pointer; font-size: 0.8em; width: 100%;">
+                            <div class="flex-end">
+                                <button id="clear-filters" class="clear-filters-btn">
                                     Clear
                                 </button>
                             </div>
                         </div>
                     </div>
                     
-                    <div id="clothing-options" style="min-height: 300px; background: white; border-radius: 8px; padding: 0 2em 2em 2em; border: 1px solid #e0ccd1; position: relative;">
-                        <div style="text-align: center; color: #999; font-size: 1.2em; padding: 3em 1em;">
+                    <div id="clothing-options" class="clothing-options">
+                        <div class="empty-state">
                             <div>Select a category above to view clothing options</div>
                         </div>
                     </div>
@@ -742,8 +742,8 @@ function setupAvatarControls() {
         console.log("🎮 Button clicked:", action, "Current zoom:", avatarState.zoom);
         
         // Visual feedback
-        button.css("transform", "scale(0.9)");
-        setTimeout(() => button.css("transform", "scale(1)"), 100);
+        button.addClass("btn-pressed");
+        setTimeout(() => button.removeClass("btn-pressed"), 100);
         
         switch(action) {
             case "zoom-in":
@@ -782,15 +782,6 @@ function setupAvatarControls() {
                 console.log("❌ Unknown action:", action);
         }
     });
-    
-    // Hover effects for avatar controls
-    $("#avatar-controls button").on("mouseenter", function() {
-        console.log("🎮 Hover on button:", $(this).attr("id"));
-        $(this).css("background", "#d59ca6");
-    }).on("mouseleave", function() {
-        $(this).css("background", "#a4446e");
-    });
-    
     console.log("🎮 Avatar controls event handlers attached");
 }
 
@@ -798,31 +789,13 @@ function setupWardrobeMainPanelControls() {
     $("#category-buttons").off("click");
     $("#clothing-options").off("click");
     
-    // Category button hover effects
-    $(".category-btn").on("mouseenter", function() {
-        if (!$(this).hasClass("active")) {
-            $(this).css("transform", "translateY(-3px) scale(1.02)");
-        }
-    }).on("mouseleave", function() {
-        if (!$(this).hasClass("active")) {
-            $(this).css("transform", "translateY(0) scale(1)");
-        }
-    });
-    
     $("#category-buttons").on("click", ".category-btn", function(e) {
         e.preventDefault();
         const category = $(this).data("category");
         
-        // Update button states
-        $(".category-btn").removeClass("active").css({
-            "background": "linear-gradient(135deg, #a4446e, #d59ca6)",
-            "transform": "translateY(0) scale(1)"
-        });
-        
-        $(this).addClass("active").css({
-            "background": "linear-gradient(135deg, #8b3a5e, #c18b96)",
-            "transform": "translateY(-2px) scale(1.05)"
-        });
+        // Update button states - CSS classes handle the styling
+        $(".category-btn").removeClass("active");
+        $(this).addClass("active");
         
         showClothingOptions(category);
     });
@@ -835,19 +808,9 @@ function setupWardrobeMainPanelControls() {
         // Update avatar outfit
         avatarState.currentOutfit[category] = item;
         
-        // Visual feedback
-        $(".clothing-item").removeClass("selected").css({
-            "background": "white",
-            "border-color": "#e0ccd1",
-            "color": "#3a3a3a"
-        });
-        
-        $(this).addClass("selected").css({
-            "background": "linear-gradient(135deg, #d59ca6, #fceef5)",
-            "border-color": "#a4446e",
-            "color": "#a4446e",
-            "transform": "scale(1.02)"
-        });
+        // Visual feedback - CSS classes handle the styling
+        $(".clothing-item").removeClass("selected");
+        $(this).addClass("selected");
         
         updateAvatarOutfit();
     });
@@ -892,29 +855,18 @@ function setupWardrobeMainPanelControls() {
         }
         
         // Visual feedback
-        button.css({
-            "transform": "scale(0.95)",
-            "background": "linear-gradient(135deg, #8b3a5e, #c18b96)"
-        });
+        button.addClass("btn-finish-pressed");
         
         setTimeout(() => {
-            button.css({
-                "transform": "scale(1)",
-                "background": "linear-gradient(135deg, #a4446e, #d59ca6)"
-            });
+            button.removeClass("btn-finish-pressed");
         }, 150);
         
         // Show success message
         const successMessage = `
-            <div id="outfit-success" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                 background: linear-gradient(135deg, #d59ca6, #fceef5); 
-                 border: 3px solid #a4446e; border-radius: 12px; 
-                 padding: 2em; text-align: center; z-index: 2000;
-                 box-shadow: 0 8px 24px rgba(164, 68, 110, 0.5);
-                 animation: successPulse 0.5s ease-out;">
-                <h3 style="color: #a4446e; margin: 0 0 1em 0;">✨ Outfit Complete! ✨</h3>
-                <p style="color: #666; margin: 0 0 1.5em 0;">Your stylish look has been saved.</p>
-                <button id="close-success" style="background: #a4446e; color: white; border: none; border-radius: 6px; padding: 0.8em 1.5em; font-weight: bold; cursor: pointer;">
+            <div id="outfit-success" class="success-modal">
+                <h3 class="success-title">✨ Outfit Complete! ✨</h3>
+                <p class="success-text">Your stylish look has been saved.</p>
+                <button id="close-success" class="success-btn">
                     Perfect!
                 </button>
             </div>
@@ -955,62 +907,74 @@ function updateAvatarOutfit() {
 }
 
 function showClothingOptions(category) {
-    const clothingData = {
+    // Compressed clothing data: [id, name, brand, style, description, price]
+    const clothingRaw = {
         inner: [
-            { id: "bralette", name: "Lace Bralette", brand: "Delicate Dreams", style: "cute", description: "Elegant lace bralette with adjustable straps for perfect comfort", price: 35 },
-            { id: "bandeau", name: "Seamless Bandeau", brand: "Minimalist", style: "minimal", description: "Strapless bandeau that's invisible under any outfit", price: 25 },
-            { id: "camisole", name: "Silk Camisole", brand: "Luxe Label", style: "luxury", description: "Premium silk camisole with delicate adjustable straps", price: 65 },
-            { id: "sports-bra", name: "High-Support Sports Bra", brand: "ActiveFit", style: "synthetic", description: "Maximum support sports bra for high-intensity activities", price: 40 }
+            ["bralette", "Lace Bralette", "Delicate Dreams", "cute", "Elegant lace bralette with adjustable straps for perfect comfort", 35],
+            ["bandeau", "Seamless Bandeau", "Minimalist", "minimal", "Strapless bandeau that's invisible under any outfit", 25],
+            ["camisole", "Silk Camisole", "Luxe Label", "luxury", "Premium silk camisole with delicate adjustable straps", 65],
+            ["sports-bra", "High-Support Sports Bra", "ActiveFit", "synthetic", "Maximum support sports bra for high-intensity activities", 40]
         ],
         tops: [
-            { id: "t-shirt", name: "Basic Cotton Tee", brand: "Essentials", style: "minimal", description: "Soft cotton t-shirt perfect for everyday wear", price: 20 },
-            { id: "blouse", name: "Silk Button Blouse", brand: "Professional", style: "luxury", description: "Elegant silk blouse with pearl buttons for a sophisticated look", price: 85 },
-            { id: "sweater", name: "Chunky Knit Sweater", brand: "Cozy Co", style: "homemade", description: "Oversized wool sweater that's perfect for chilly days", price: 60 },
-            { id: "corset", name: "Structured Corset Top", brand: "Gothic Glam", style: "edge", description: "Statement corset with structured boning and dramatic silhouette", price: 95 }
+            ["t-shirt", "Basic Cotton Tee", "Essentials", "minimal", "Soft cotton t-shirt perfect for everyday wear", 20],
+            ["blouse", "Silk Button Blouse", "Professional", "luxury", "Elegant silk blouse with pearl buttons for a sophisticated look", 85],
+            ["sweater", "Chunky Knit Sweater", "Cozy Co", "homemade", "Oversized wool sweater that's perfect for chilly days", 60],
+            ["corset", "Structured Corset Top", "Gothic Glam", "edge", "Statement corset with structured boning and dramatic silhouette", 95]
         ],
         outer: [
-            { id: "trench-coat", name: "Classic Trench Coat", brand: "Timeless", style: "suave", description: "Iconic beige trench coat with belt and classic detailing", price: 150 },
-            { id: "leather-jacket", name: "Biker Leather Jacket", brand: "Rebel Style", style: "edge", description: "Genuine leather jacket with silver hardware and attitude", price: 200 },
-            { id: "blazer", name: "Tailored Blazer", brand: "Executive", style: "sleek", description: "Sharp-shouldered blazer for professional power dressing", price: 120 },
-            { id: "kimono-jacket", name: "Silk Kimono Jacket", brand: "Eastern Grace", style: "fluid", description: "Flowing silk kimono with delicate cherry blossom print", price: 110 }
+            ["trench-coat", "Classic Trench Coat", "Timeless", "suave", "Iconic beige trench coat with belt and classic detailing", 150],
+            ["leather-jacket", "Biker Leather Jacket", "Rebel Style", "edge", "Genuine leather jacket with silver hardware and attitude", 200],
+            ["blazer", "Tailored Blazer", "Executive", "sleek", "Sharp-shouldered blazer for professional power dressing", 120],
+            ["kimono-jacket", "Silk Kimono Jacket", "Eastern Grace", "fluid", "Flowing silk kimono with delicate cherry blossom print", 110]
         ],
         bottoms: [
-            { id: "jeans", name: "High-Waist Jeans", brand: "Vintage Vibes", style: "vintage", description: "Classic high-waist denim with authentic vintage wash", price: 60 },
-            { id: "dress-pants", name: "Tailored Trousers", brand: "Professional", style: "sleek", description: "Perfectly tailored wool-blend trousers for the office", price: 80 },
-            { id: "cargo-pants", name: "Tactical Cargo Pants", brand: "UrbanOps", style: "tactical", description: "Multi-pocket utility pants ready for any adventure", price: 70 },
-            { id: "leggings", name: "High-Tech Leggings", brand: "ActiveFit", style: "synthetic", description: "Performance leggings with moisture-wicking technology", price: 45 }
+            ["jeans", "High-Waist Jeans", "Vintage Vibes", "vintage", "Classic high-waist denim with authentic vintage wash", 60],
+            ["dress-pants", "Tailored Trousers", "Professional", "sleek", "Perfectly tailored wool-blend trousers for the office", 80],
+            ["cargo-pants", "Tactical Cargo Pants", "UrbanOps", "tactical", "Multi-pocket utility pants ready for any adventure", 70],
+            ["leggings", "High-Tech Leggings", "ActiveFit", "synthetic", "Performance leggings with moisture-wicking technology", 45]
         ],
         skirts: [
-            { id: "pencil-skirt", name: "High-Waist Pencil Skirt", brand: "Executive", style: "sleek", description: "Form-fitting pencil skirt that commands attention", price: 55 },
-            { id: "circle-skirt", name: "Full Circle Skirt", brand: "Retro Revival", style: "retro", description: "1950s inspired circle skirt with playful swing", price: 65 },
-            { id: "asymmetrical-skirt", name: "Asymmetric Hem Skirt", brand: "Avant-Garde", style: "avant-garde", description: "Experimental design with dramatic asymmetrical hemline", price: 90 },
-            { id: "pleated-skirt", name: "Pleated Mini Skirt", brand: "Sweet Style", style: "cute", description: "Playful pleated mini with schoolgirl charm", price: 40 }
+            ["pencil-skirt", "High-Waist Pencil Skirt", "Executive", "sleek", "Form-fitting pencil skirt that commands attention", 55],
+            ["circle-skirt", "Full Circle Skirt", "Retro Revival", "retro", "1950s inspired circle skirt with playful swing", 65],
+            ["asymmetrical-skirt", "Asymmetric Hem Skirt", "Avant-Garde", "avant-garde", "Experimental design with dramatic asymmetrical hemline", 90],
+            ["pleated-skirt", "Pleated Mini Skirt", "Sweet Style", "cute", "Playful pleated mini with schoolgirl charm", 40]
         ],
         dress: [
-            { id: "shift-dress", name: "Minimalist Shift Dress", brand: "Clean Lines", style: "minimal", description: "Effortlessly chic shift dress in premium fabric", price: 100 },
-            { id: "wrap-dress", name: "Vintage Wrap Dress", brand: "Retro Revival", style: "vintage", description: "Flattering wrap dress with timeless floral print", price: 75 },
-            { id: "cocktail-dress", name: "Sequined Cocktail Dress", brand: "Glamour", style: "luxury", description: "Dazzling sequined dress perfect for special occasions", price: 180 },
-            { id: "bodycon-dress", name: "Bodycon Midi Dress", brand: "Figure Fit", style: "edge", description: "Body-hugging stretch dress that celebrates your curves", price: 60 }
+            ["shift-dress", "Minimalist Shift Dress", "Clean Lines", "minimal", "Effortlessly chic shift dress in premium fabric", 100],
+            ["wrap-dress", "Vintage Wrap Dress", "Retro Revival", "vintage", "Flattering wrap dress with timeless floral print", 75],
+            ["cocktail-dress", "Sequined Cocktail Dress", "Glamour", "luxury", "Dazzling sequined dress perfect for special occasions", 180],
+            ["bodycon-dress", "Bodycon Midi Dress", "Figure Fit", "edge", "Body-hugging stretch dress that celebrates your curves", 60]
         ],
         hosiery: [
-            { id: "thigh-highs", name: "Lace-Top Thigh Highs", brand: "Delicate Dreams", style: "cute", description: "Sheer thigh-high stockings with romantic lace tops", price: 25 },
-            { id: "fishnet-tights", name: "Fishnet Tights", brand: "Rebel Style", style: "edge", description: "Bold fishnet tights that make a statement", price: 15 },
-            { id: "knee-highs", name: "Striped Knee Highs", brand: "Y2K Revival", style: "y2k", description: "Colorful striped knee-high socks with retro flair", price: 20 },
-            { id: "bodystocking", name: "Sheer Bodystocking", brand: "Avant-Garde", style: "avant-garde", description: "Full-body sheer bodystocking for the adventurous", price: 50 }
+            ["stockings", "Silk Stockings", "Luxe Legs", "luxury", "Premium silk stockings with reinforced toe and heel", 25],
+            ["tights", "Opaque Black Tights", "Basic", "minimal", "Classic opaque tights in deep black for versatility", 12],
+            ["fishnets", "Fishnet Stockings", "Wild Side", "edge", "Bold fishnet stockings that make a statement", 18],
+            ["knee-highs", "Argyle Knee Highs", "Preppy", "cute", "Playful argyle pattern knee-high socks", 15]
         ],
         shoes: [
-            { id: "stilettos", name: "Patent Leather Stilettos", brand: "Luxe Steps", style: "luxury", description: "Sky-high patent leather heels for ultimate glamour", price: 120 },
-            { id: "combat-boots", name: "Military Combat Boots", brand: "UrbanOps", style: "tactical", description: "Heavy-duty lace-up boots built for durability", price: 90 },
-            { id: "ballet-flats", name: "Leather Ballet Flats", brand: "Essentials", style: "minimal", description: "Classic leather flats for effortless elegance", price: 55 },
-            { id: "platform-boots", name: "Platform Ankle Boots", brand: "Y2K Revival", style: "y2k", description: "Chunky platform boots with serious height", price: 85 }
+            ["heels", "Classic Black Heels", "Professional", "sleek", "Timeless black pumps with 3-inch heel for office elegance", 90],
+            ["boots", "Combat Boots", "Rebel Style", "edge", "Heavy-duty lace-up boots ready for anything", 120],
+            ["sneakers", "Vintage Sneakers", "Retro Revival", "vintage", "Classic white leather sneakers with retro styling", 75],
+            ["flats", "Ballet Flats", "Comfort Co", "minimal", "Comfortable ballet flats in soft leather for all-day wear", 55]
         ],
         accessories: [
-            { id: "choker", name: "Velvet Choker", brand: "Gothic Glam", style: "edge", description: "Classic black velvet choker with vintage appeal", price: 20 },
-            { id: "designer-glasses", name: "Cat-Eye Glasses", brand: "Retro Revival", style: "vintage", description: "Statement cat-eye frames with retro sophistication", price: 85 },
-            { id: "leather-gloves", name: "Opera Length Gloves", brand: "Luxe Label", style: "luxury", description: "Elegant long leather gloves for formal occasions", price: 75 },
-            { id: "statement-belt", name: "Chain Link Belt", brand: "Rebel Style", style: "edge", description: "Heavy metal chain belt that demands attention", price: 60 }
+            ["necklace", "Statement Necklace", "Bold Jewelry", "luxury", "Eye-catching statement piece that elevates any outfit", 60],
+            ["watch", "Vintage Watch", "Timeless", "vintage", "Classic analog watch with leather strap and aged patina", 85],
+            ["bag", "Leather Handbag", "Executive", "sleek", "Structured leather handbag perfect for professional settings", 140],
+            ["scarf", "Silk Scarf", "Luxe Label", "luxury", "Premium silk scarf with elegant pattern and soft drape", 45],
+            ["choker", "Velvet Choker", "Gothic Glam", "edge", "Classic black velvet choker with vintage appeal", 20],
+            ["designer-glasses", "Cat-Eye Glasses", "Retro Revival", "vintage", "Statement cat-eye frames with retro sophistication", 85],
+            ["leather-gloves", "Opera Length Gloves", "Luxe Label", "luxury", "Elegant long leather gloves for formal occasions", 75],
+            ["statement-belt", "Chain Link Belt", "Rebel Style", "edge", "Heavy metal chain belt that demands attention", 60]
         ]
     };
+    
+    // Convert compressed data to objects
+    const clothingData = {};
+    for (const [cat, items] of Object.entries(clothingRaw)) {
+        clothingData[cat] = items.map(([id, name, brand, style, description, price]) => 
+            ({ id, name, brand, style, description, price }));
+    }
     
     const items = clothingData[category] || [];
     const categoryNames = {
@@ -1028,11 +992,11 @@ function showClothingOptions(category) {
     // Handle accessories subcategories
     if (category === "accessories") {
         let html = `
-            <div style="text-align: center; margin: 2em 0;">
-                <h3 style="color: #a4446e; font-size: 2em; margin: 0;">
+            <div class="accessories-header">
+                <h3 class="accessories-title">
                     ${categoryNames[category]}
                 </h3>
-                <p style="color: #666; font-size: 1.1em; margin: 0.5em 0 0 0;">Choose a subcategory</p>
+                <p class="subcategory-text">Choose a subcategory</p>
             </div>
         `;
         
@@ -1049,15 +1013,12 @@ function showClothingOptions(category) {
             { id: "legwarmers", name: "Legwarmers", emoji: "🧦" }
         ];
         
-        html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1em;">';
+        html += '<div class="subcategory-grid">';
         
         accessorySubcategories.forEach(subcategory => {
             html += `
-                <button class="subcategory-btn" data-subcategory="${subcategory.id}" 
-                        style="background: white; border: 2px solid #e0ccd1; color: #a4446e; border-radius: 8px; 
-                        padding: 1em; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease;
-                        text-align: center;">
-                    <div style="font-size: 2em; margin-bottom: 0.5em;">${subcategory.emoji}</div>
+                <button class="subcategory-btn" data-subcategory="${subcategory.id}">
+                    <div class="subcategory-emoji">${subcategory.emoji}</div>
                     <div>${subcategory.name}</div>
                 </button>
             `;
@@ -1077,18 +1038,18 @@ function showClothingOptions(category) {
     
     // Regular category display - clean with just header and clothing grid
     let html = `
-        <div style="text-align: center; margin: 2em 0;">
-            <h3 style="color: #a4446e; font-size: 2em; margin: 0;">
+        <div class="category-header">
+            <h3 class="category-title">
                 ${categoryNames[category]}
             </h3>
         </div>
     `;
     
     if (items.length === 0) {
-        html += `<div style="text-align: center; color: #666; font-size: 1.2em; padding: 2em;">No items available in this category</div>`;
+        html += `<div class="no-items">No items available in this category</div>`;
     } else {
         // Grid layout for asset containers - 5 columns with smaller gap
-        html += '<div id="clothing-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6em; padding: 0 1em;">';
+        html += '<div id="clothing-grid" class="clothing-grid">';
         
         items.forEach(item => {
             const isSelected = avatarState.currentOutfit[category] === item.id;
@@ -1097,20 +1058,11 @@ function showClothingOptions(category) {
                 <div class="clothing-item ${isSelected ? 'selected' : ''}" 
                      data-item="${item.id}" data-category="${category}"
                      data-name="${item.name}" data-brand="${item.brand}" data-description="${item.description}"
-                     data-style="${item.style}" data-price="${item.price}"
-                     style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; 
-                     background: ${isSelected ? 'linear-gradient(135deg, #d59ca6, #fceef5)' : 'white'}; 
-                     border: 3px solid ${isSelected ? '#a4446e' : '#e0ccd1'}; 
-                     border-radius: 12px; cursor: pointer; position: relative;
-                     transition: all 0.3s ease; 
-                     box-shadow: ${isSelected ? '0 4px 12px rgba(164, 68, 110, 0.4)' : '0 2px 8px rgba(224, 204, 209, 0.2)'};
-                     ${isSelected ? 'transform: scale(1.05);' : ''}">
+                     data-style="${item.style}" data-price="${item.price}">
                      
-                    <div class="asset-icon" style="width: 80%; height: 80%; background: #f8f8f8; border-radius: 8px; 
-                         display: flex; align-items: center; justify-content: center;
-                         border: 2px dashed #ddd; position: relative;">
+                    <div class="asset-icon">
     
-                    <div style="font-size: 0.7em; color: #aaa; text-align: center; line-height: 1.2;">
+                    <div class="asset-placeholder">
                         ${item.id}
                     </div>
                     
@@ -1196,23 +1148,6 @@ function showClothingOptions(category) {
         }
         
         showClothingOptions(category);
-    });
-    
-    // Hover effects for clothing items
-    $(".clothing-item").on("mouseenter", function() {
-        if (!$(this).hasClass("selected")) {
-            $(this).css({
-                "transform": "translateY(-2px) scale(1.05)",
-                "box-shadow": "0 6px 16px rgba(164, 68, 110, 0.3)"
-            });
-        }
-    }).on("mouseleave", function() {
-        if (!$(this).hasClass("selected")) {
-            $(this).css({
-                "transform": "translateY(0) scale(1)",
-                "box-shadow": "0 2px 8px rgba(224, 204, 209, 0.2)"
-            });
-        }
     });
 }
 
@@ -1378,6 +1313,458 @@ $(document).on(':passagerender', function () {
 });
 
 :: StoryStylesheet [stylesheet]
+/* ==== CSS CUSTOM PROPERTIES ==== */
+:root {
+    --primary-color: #a4446e;
+    --primary-hover: #d59ca6;
+    --primary-active: #8b3a5e;
+    --secondary-color: #c18b96;
+    --background-light: #fceef5;
+    --background-white: #fffdfb;
+    --border-color: #e0ccd1;
+    --text-color: #3a3a3a;
+    --shadow-color: rgba(164, 68, 110, 0.3);
+    --shadow-border: rgba(224, 204, 209, 0.2);
+}
+
+/* ==== REUSABLE BUTTON CLASSES ==== */
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none !important;
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    text-decoration: none !important;
+}
+
+.btn-round-40 {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2em;
+}
+
+.btn-round-30 {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75em;
+}
+
+.btn-category {
+    background: var(--background-white);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px var(--shadow-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-category:hover {
+    transform: translateY(-3px) scale(1.02);
+}
+
+.btn-category.active {
+    background: var(--primary-hover) !important;
+    color: white !important;
+    transform: translateY(-2px) scale(1.05) !important;
+    box-shadow: 0 4px 8px var(--shadow-color) !important;
+}
+
+.btn-category.active:hover {
+    background: var(--primary-hover) !important;
+    color: white !important;
+}
+
+.btn-category.active:hover {
+    background: var(--primary-hover) !important;
+    color: white !important;
+}
+
+/* ==== COMMON ELEMENT STYLES ==== */
+.avatar-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    background: var(--background-white);
+    border-radius: 8px;
+    margin-bottom: 0;
+    border: 2px solid var(--border-color);
+    position: relative;
+}
+
+.wardrobe-title {
+    color: var(--primary-color);
+    margin: 0;
+    padding: 0;
+    font-size: 2.5em;
+}
+
+.wardrobe-categories {
+    background: var(--background-light);
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    padding: 2em;
+    box-shadow: 0 4px 12px var(--shadow-border);
+}
+
+.side-btn {
+    position: absolute;
+    bottom: 0;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 80px;
+    height: 30px;
+    font-size: 0.85em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transform: none;
+}
+
+.side-btn:hover {
+    background: var(--primary-hover);
+}
+
+.side-btn.left {
+    left: 0;
+}
+
+.side-btn.right {
+    right: 0;
+}
+
+.filter-panel {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    z-index: 100;
+    display: none;
+    margin-bottom: 1em;
+    padding: 1em;
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.filter-label {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    display: block;
+    font-size: 0.9em;
+}
+
+.filter-select {
+    width: 100%;
+    padding: 0.4em;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.8em;
+}
+
+.filter-select {
+    width: 100%;
+    padding: 0.4em;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.8em;
+}
+
+/* ==== LAYOUT CLASSES ==== */
+.avatar-sidebar-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.avatar-display {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.avatar-character {
+    font-size: 6em;
+    filter: drop-shadow(2px 2px 4px var(--shadow-color));
+}
+
+.avatar-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.wardrobe-main-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2em 0;
+}
+
+.text-center {
+    text-align: center;
+    margin: 0 0 2em 0;
+    padding: 0;
+}
+
+.category-container {
+    position: relative;
+    margin-bottom: 1em;
+}
+
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4em;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1em;
+}
+
+.flex-end {
+    display: flex;
+    align-items: end;
+}
+
+.form-modal {
+    display: none;
+}
+
+.flex-end {
+    display: flex;
+    align-items: end;
+}
+
+.form-modal {
+    display: none;
+}
+
+/* ==== CLOTHING ITEM STYLES ==== */
+.clothing-item {
+    background: white;
+    border-color: var(--border-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--border-color);
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 2px 8px var(--shadow-border);
+}
+
+.clothing-item.selected {
+    background: linear-gradient(135deg, var(--primary-hover), var(--background-light));
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.clothing-item:hover:not(.selected) {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px var(--shadow-color);
+    border-color: var(--primary-color);
+}
+
+/* ==== ADDITIONAL LAYOUT CLASSES ==== */
+    width: 80%;
+    height: 80%;
+    background: #f8f8f8;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ddd;
+    position: relative;
+}
+
+.asset-placeholder {
+    font-size: 0.7em;
+    color: #aaa;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* ==== ADDITIONAL UI ELEMENTS ==== */
+.clear-filters-btn {
+    background: var(--primary-hover);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.4em 0.8em;
+    cursor: pointer;
+    font-size: 0.8em;
+    width: 100%;
+}
+
+.clothing-options {
+    min-height: 300px;
+    background: white;
+    border-radius: 8px;
+    padding: 0 2em 2em 2em;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.empty-state {
+    text-align: center;
+    color: #999;
+    font-size: 1.2em;
+    padding: 3em 1em;
+}
+
+.success-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, var(--primary-hover), var(--background-light));
+    border: 3px solid var(--primary-color);
+    border-radius: 12px;
+    padding: 2em;
+    text-align: center;
+    z-index: 2000;
+    box-shadow: 0 8px 24px var(--shadow-color);
+    animation: successPulse 0.5s ease-out;
+}
+
+.success-title {
+    color: var(--primary-color);
+    margin: 0 0 1em 0;
+}
+
+.success-text {
+    color: #666;
+    margin: 0 0 1.5em 0;
+}
+
+.success-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.8em 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.accessories-header {
+    text-align: center;
+    margin: 2em 0;
+}
+
+.accessories-title {
+    color: var(--primary-color);
+    font-size: 2em;
+    margin: 0;
+}
+
+/* ==== ADDITIONAL LAYOUT CLASSES ==== */
+.subcategory-text {
+    color: #666;
+    font-size: 1.1em;
+    margin: 0.5em 0 0 0;
+}
+
+.subcategory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1em;
+}
+
+.subcategory-btn {
+    background: white;
+    border: 2px solid var(--border-color);
+    color: var(--primary-color);
+    border-radius: 8px;
+    padding: 1em;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.subcategory-emoji {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+}
+
+.category-header {
+    text-align: center;
+    margin: 2em 0;
+}
+
+.category-title {
+    color: var(--primary-color);
+    font-size: 2em;
+    margin: 0;
+}
+
+.no-items {
+    text-align: center;
+    color: #666;
+    font-size: 1.2em;
+    padding: 2em;
+}
+
+.clothing-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.6em;
+    padding: 0 1em;
+}
+
+/* ==== BUTTON INTERACTION STATES ==== */
+.btn-pressed {
+    transform: scale(0.9) !important;
+}
+
+/* ==== BUTTON INTERACTION STATES ==== */
+.btn-pressed {
+    transform: scale(0.9) !important;
+}
+
+.btn-finish-pressed {
+    transform: scale(0.95) !important;
+    background: linear-gradient(135deg, var(--primary-active), var(--secondary-color)) !important;
+}
+
+.form-modal {
+    display: none;
+}
+
+.form-modal.show {
+    display: flex;
+}
+
 /* ==== MAIN LAYOUT ==== */
 #game-container {
     display: flex;
@@ -1387,7 +1774,7 @@ $(document).on(':passagerender', function () {
     padding: 0;
     box-sizing: border-box;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #3a3a3a;
+    color: var(--text-color);
 }
 
 /* ==== SIDEBAR STRUCTURE ==== */
@@ -1398,10 +1785,10 @@ $(document).on(':passagerender', function () {
     flex: 1 1 0;
     min-width: 180px;
     max-width: 600px;
-    background-color: #fceef5;
-    border-right: 3px solid #e0ccd1;
+    background-color: var(--background-light);
+    border-right: 3px solid var(--border-color);
     box-sizing: border-box;
-    color: #3a3a3a;
+    color: var(--text-color);
     padding: 0;
 }
 
@@ -1415,7 +1802,7 @@ $(document).on(':passagerender', function () {
     display: flex;
     align-items: stretch;
     justify-content: center;
-    background: #e0ccd1;
+    background: var(--border-color);
     border-radius: 8px 8px 0 0;
     box-sizing: border-box;
 }
@@ -1514,8 +1901,8 @@ $(document).on(':passagerender', function () {
     background: #fceef5;
 }
 .calendar-day {
-    background: #fceef5;
-    color: #3a3a3a;
+    background: var(--background-light);
+    color: var(--text-color);
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
     border: 1px solid #e0ccd1;
@@ -1773,17 +2160,6 @@ tw-link:hover {
     box-shadow: 0 4px 8px rgba(164, 68, 110, 0.3);
 }
 
-.clothing-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(164, 68, 110, 0.2);
-    border-color: #a4446e !important;
-}
-
-.clothing-item.selected:hover {
-    background-color: #d59ca6 !important;
-    border-color: #a4446e !important;
-}
-
 /* Avatar controls repositioned */
 #avatar-sidebar-content #avatar-controls {
     margin-top: auto;
@@ -1839,23 +2215,3 @@ tw-link:hover {
     margin-top: 1em;
 }
 
-#avatar-controls button {
-    text-decoration: none !important;
-}
-
-#avatar-controls button:hover {
-    text-decoration: none !important;
-}
-
-/* ==== CATEGORY BUTTONS - Active state styling ==== */
-.category-btn.active {
-    background: #d59ca6 !important;
-    color: white !important;
-    transform: translateY(-2px) scale(1.05) !important;
-    box-shadow: 0 4px 8px rgba(164, 68, 110, 0.3) !important;
-}
-
-.category-btn.active:hover {
-    background: #d59ca6 !important;
-    color: white !important;
-}
