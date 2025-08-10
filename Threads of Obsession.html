@@ -104,7 +104,20 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<tw-storydata name="Threads of Obsession" startnode="1" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="A529D8ED-8FE3-4AD5-8B8C-D4855BD66728" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* ==== MAIN LAYOUT ==== */
+	<tw-storydata name="Threads of Obsession" startnode="1" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="A529D8ED-8FE3-4AD5-8B8C-D4855BD66728" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* ==== CSS CUSTOM PROPERTIES ==== */
+:root {
+    --theme-primary: #a4446e;
+    --theme-secondary: #d59ca6;
+    --theme-background: #fceef5;
+    --theme-light: #fffdfb;
+    --theme-primary-alpha: rgba(164, 68, 110, 0.3);
+    --theme-primary-dark: #8b3a5e;
+    --theme-secondary-dark: #c18b96;
+    --theme-border: #e0ccd1;
+    --theme-text: #3a3a3a;
+}
+
+/* ==== MAIN LAYOUT ==== */
 #game-container {
     display: flex;
     height: 100vh;
@@ -113,7 +126,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     padding: 0;
     box-sizing: border-box;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #3a3a3a;
+    color: var(--theme-text);
 }
 
 /* ==== SIDEBAR STRUCTURE ==== */
@@ -124,10 +137,10 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     flex: 1 1 0;
     min-width: 180px;
     max-width: 600px;
-    background-color: #fceef5;
-    border-right: 3px solid #e0ccd1;
+    background-color: var(--theme-background);
+    border-right: 3px solid var(--theme-border);
     box-sizing: border-box;
-    color: #3a3a3a;
+    color: var(--theme-text);
     padding: 0;
 }
 
@@ -141,7 +154,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     display: flex;
     align-items: stretch;
     justify-content: center;
-    background: #e0ccd1;
+    background: var(--theme-border);
     border-radius: 8px 8px 0 0;
     box-sizing: border-box;
 }
@@ -209,7 +222,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     font-weight: bold;
     font-size: 1em;
     margin: 0.3em 0 0.1em 0;
-    color: #a4446e;
+    color: var(--theme-primary);
 }
 #calendar-grid {
     display: grid;
@@ -217,7 +230,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     grid-auto-rows: 1.8em;
     gap: 0.1em;
     justify-content: center;
-    background: #fffdfb;
+    background: var(--theme-light);
     padding: 0.15em;
     border-radius: 6px;
     box-shadow: 0 1px 4px #e0ccd180;
@@ -236,22 +249,22 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 }
 .calendar-day-header {
     font-weight: bold;
-    color: #a4446e;
-    background: #fceef5;
+    color: var(--theme-primary);
+    background: var(--theme-background);
 }
 .calendar-day {
-    background: #fceef5;
-    color: #3a3a3a;
+    background: var(--theme-background);
+    color: var(--theme-text);
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
     border: 1px solid #e0ccd1;
 }
 .calendar-day:hover {
-    background: #d59ca6;
+    background: var(--theme-secondary);
     color: white;
 }
 .calendar-day.selected {
-    background: #a4446e;
+    background: var(--theme-primary);
     color: white;
 }
 
@@ -261,7 +274,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     width: 100%;
     padding: 1em;
     border-top: 1px solid #e0ccd1;
-    background-color: #fceef5;
+    background-color: var(--theme-background);
     box-sizing: border-box;
 }
 #sidebar-options {
@@ -271,7 +284,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 #options-button {
     padding: 0.5em 1em;
     font-size: 1em;
-    background-color: #a4446e;
+    background-color: var(--theme-primary);
     color: white;
     border: none;
     border-radius: 5px;
@@ -280,7 +293,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     transition: background-color 0.2s;
 }
 #options-button:hover {
-    background-color: #d59ca6;
+    background-color: var(--theme-secondary);
 }
 #sidebar-buttons {
     display: flex;
@@ -291,7 +304,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     flex: 1;
     padding: 0.5em;
     font-size: 1em;
-    background-color: #a4446e;
+    background-color: var(--theme-primary);
     color: white;
     border: none;
     border-radius: 5px;
@@ -299,14 +312,14 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
     transition: background-color 0.2s;
 }
 #sidebar-buttons button:hover {
-    background-color: #d59ca6;
+    background-color: var(--theme-secondary);
 }
 
 /* ==== MAIN PANEL ==== */
 #main-panel {
     flex: 2 1 0;
     padding: 2em;
-    background-color: #fffdfb;
+    background-color: var(--theme-light);
     overflow-y: auto;
 }
 tw-passage {
@@ -362,7 +375,7 @@ tw-passage {
     flex: 0 1 360px;
     min-width: 220px;
     max-width: 400px;
-    border-left: 2px solid #fceef5;
+    border-left: 2px solid var(--theme-background);
     padding-left: 2em;
     color: #444;
     font-size: 0.93em;
@@ -374,11 +387,11 @@ tw-passage {
     font-size: 1.5em;
     margin-top: 0;
     margin-bottom: 1em;
-    color: #a4446e;
+    color: var(--theme-primary);
 }
 #form-modal .modal-content h3 {
     font-size: 1.1em;
-    color: #d59ca6;
+    color: var(--theme-secondary);
     margin-top: 1.2em;
     margin-bottom: 0.2em;
 }
@@ -425,7 +438,7 @@ tw-passage {
     margin-bottom: 1em;
 }
 #form-modal .modal-content button {
-    background-color: #a4446e;
+    background-color: var(--theme-primary);
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -438,7 +451,7 @@ tw-passage {
     margin: 1.5em auto 0 auto;
 }
 #form-modal .modal-content button:hover {
-    background-color: #d59ca6;
+    background-color: var(--theme-secondary);
 }
 
 /* Responsive: stack columns on small screens */
@@ -451,7 +464,7 @@ tw-passage {
     }
     #form-modal .info-col {
         border-left: none;
-        border-top: 2px solid #fceef5;
+        border-top: 2px solid var(--theme-background);
         padding-left: 0;
         padding-top: 1em;
         min-width: 0;
@@ -463,14 +476,14 @@ tw-passage {
 a,
 button,
 tw-link {
-    color: #a4446e;
+    color: var(--theme-primary);
     text-decoration: none;
     font-weight: bold;
 }
 a:hover,
 button:hover,
 tw-link:hover {
-    color: #d59ca6;
+    color: var(--theme-secondary);
     text-decoration: underline;
 }
 
@@ -481,33 +494,70 @@ tw-link:hover {
 }
 
 .category-btn {
-    background-color: #a4446e !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 6px !important;
-    padding: 0.8em 1.2em !important;
-    font-size: 1em !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    font-weight: bold !important;
-    min-width: 120px;
+    background: var(--theme-light);
+    color: var(--theme-primary);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 0.75em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px var(--theme-primary-alpha);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
 }
 
 .category-btn:hover {
-    background-color: #d59ca6 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(164, 68, 110, 0.3);
+    background: var(--theme-secondary);
+    color: white;
+    transform: translateY(-3px) scale(1.02);
+    text-decoration: none;
+}
+
+.category-btn.active {
+    background: var(--theme-secondary);
+    color: white;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 8px var(--theme-primary-alpha);
+}
+
+.category-btn.active:hover {
+    background: var(--theme-secondary);
+    color: white;
+}
+
+/* ==== AVATAR CONTROL BUTTONS ==== */
+.avatar-control-btn {
+    background: var(--theme-primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.avatar-control-btn:hover {
+    background: var(--theme-secondary);
+    transform: scale(1.05);
 }
 
 .clothing-item:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(164, 68, 110, 0.2);
-    border-color: #a4446e !important;
+    border-color: var(--theme-primary) !important;
 }
 
 .clothing-item.selected:hover {
-    background-color: #d59ca6 !important;
-    border-color: #a4446e !important;
+    background-color: var(--theme-secondary) !important;
+    border-color: var(--theme-primary) !important;
 }
 
 /* Avatar controls repositioned */
@@ -573,18 +623,7 @@ tw-link:hover {
     text-decoration: none !important;
 }
 
-/* ==== CATEGORY BUTTONS - Active state styling ==== */
-.category-btn.active {
-    background: #d59ca6 !important;
-    color: white !important;
-    transform: translateY(-2px) scale(1.05) !important;
-    box-shadow: 0 4px 8px rgba(164, 68, 110, 0.3) !important;
-}
-
-.category-btn.active:hover {
-    background: #d59ca6 !important;
-    color: white !important;
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript">// ---- DYNAMIC STATS INJECTION ----
+</style><script role="script" id="twine-user-script" type="text/twine-javascript">// ---- DYNAMIC STATS INJECTION ----
 function updateStats() {
     const vars = State.variables;
     $('#player-time').text(vars.time || "00:00");
@@ -869,7 +908,7 @@ function updateAvatarDisplay() {
         // Apply current transform and outfit changes
         avatarCharacter.css({
             "transform": `scale(${avatarState.zoom}) rotate(${avatarState.rotation}deg)`,
-            "filter": "drop-shadow(2px 2px 4px rgba(164, 68, 110, 0.3))"
+            "filter": "drop-shadow(2px 2px 4px var(--theme-primary-alpha))"
         });
         
         // Add a subtle pulse effect to show something changed
@@ -901,16 +940,16 @@ function renderWardrobeSidebar() {
     // Create the wardrobe sidebar with clean avatar display
     sidebarContent.html(`
         <div id="avatar-sidebar-content" style="height: 100%; display: flex; flex-direction: column;">
-            <div id="avatar-container" style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 300px; background: #fffdfb; border-radius: 8px; margin-bottom: 0; border: 2px solid #e0ccd1; position: relative;">
+            <div id="avatar-container" style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 300px; background: var(--theme-light); border-radius: 8px; margin-bottom: 0; border: 2px solid #e0ccd1; position: relative;">
                 <div id="avatar-display" style="width: 90%; height: 90%; display: flex; align-items: center; justify-content: center; transform: scale(${avatarState.zoom}) rotate(${avatarState.rotation}deg); transition: all 0.3s ease;">
-                    <div id="avatar-character" style="font-size: 6em; filter: drop-shadow(2px 2px 4px rgba(164, 68, 110, 0.3));">👤</div>
+                    <div id="avatar-character" style="font-size: 6em; filter: drop-shadow(2px 2px 4px var(--theme-primary-alpha));">👤</div>
                 </div>
             </div>
             <div id="avatar-controls" style="display: flex; justify-content: center; gap: 0.5em; margin-bottom: 0.5em;">
-                <button id="zoom-in" title="Zoom In" style="background: #a4446e; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.2s ease;">+</button>
-                <button id="zoom-out" title="Zoom Out" style="background: #a4446e; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.2s ease;">−</button>
-                <button id="rotate-left" title="Rotate Left" style="background: #a4446e; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.2s ease;">↺</button>
-                <button id="rotate-right" title="Rotate Right" style="background: #a4446e; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.2s ease;">↻</button>
+                <button id="zoom-in" title="Zoom In" class="avatar-control-btn">+</button>
+                <button id="zoom-out" title="Zoom Out" class="avatar-control-btn">−</button>
+                <button id="rotate-left" title="Rotate Left" class="avatar-control-btn">↺</button>
+                <button id="rotate-right" title="Rotate Right" class="avatar-control-btn">↻</button>
             </div>
         </div>
     `);
@@ -984,23 +1023,12 @@ function injectWardrobeMainPanel() {
         #category-buttons {
             flex-shrink: 0;
         }
-        .category-btn {
-            background: #fffdfb !important;
-            color: #a4446e !important;
-            text-decoration: none !important;
-        }
-        .category-btn:hover {
-            background: #d59ca6 !important;
-            color: white !important;
-            transform: scale(1.1);
-            text-decoration: none !important;
-        }
         .side-btn {
-            background: #a4446e !important;
+            background: var(--theme-primary) !important;
             color: white !important;
         }
         .side-btn:hover {
-            background: #d59ca6 !important;
+            background: var(--theme-secondary) !important;
             transform: none !important;
         }
         #toggle-filters:hover, #finish-outfit:hover {
@@ -1009,63 +1037,63 @@ function injectWardrobeMainPanel() {
     </style>
     <div id="wardrobe-main-content" style="max-width: 900px; margin: 0 auto; padding: 0; padding-top: 2em; padding-bottom: 2em;">
                 <div style="text-align: center; margin: 0; padding: 0; margin-bottom: 2em;">
-                    <h1 style="color: #a4446e; margin: 0; padding: 0; font-size: 2.5em;">Your Wardrobe</h1>
+                    <h1 style="color: var(--theme-primary); margin: 0; padding: 0; font-size: 2.5em;">Your Wardrobe</h1>
                 </div>
                 
-                <div id="wardrobe-categories" style="background: #fceef5; border-radius: 12px; border: 2px solid #e0ccd1; padding: 2em; box-shadow: 0 4px 12px rgba(224, 204, 209, 0.2);">
+                <div id="wardrobe-categories" style="background: var(--theme-background); border-radius: 12px; border: 2px solid #e0ccd1; padding: 2em; box-shadow: 0 4px 12px rgba(224, 204, 209, 0.2);">
                     
                     <!-- Category Buttons Row with Side Buttons -->
                     <div style="position: relative; margin-bottom: 1em;">
                         
                         <!-- ORIGINAL Category Buttons Layout - Unchanged -->
                         <div id="category-buttons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4em;">
-                            <button class="category-btn" data-category="inner" title="Inner" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn" data-category="inner" title="Inner">
                                 👙
                             </button>
-                            <button class="category-btn" data-category="tops" title="Tops" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn" data-category="tops" title="Tops">
                                 👕
                             </button>
-                            <button class="category-btn" data-category="outer" title="Outer" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn" data-category="outer" title="Outer">
                                 🧥
                             </button>
-                            <button class="category-btn" data-category="bottoms" title="Bottoms" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn" data-category="bottoms" title="Bottoms">
                                 👖
                             </button>
-                            <button class="category-btn" data-category="skirts" title="Skirts" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn" data-category="skirts" title="Skirts">
                                 👗
                             </button>
-                            <button class="category-btn" data-category="dress" title="Dress" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn" data-category="dress" title="Dress">
                                 👔
                             </button>
-                            <button class="category-btn" data-category="hosiery" title="Hosiery" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn" data-category="hosiery" title="Hosiery">
                                 🧦
                             </button>
-                            <button class="category-btn" data-category="shoes" title="Shoes" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn" data-category="shoes" title="Shoes">
                                 👠
                             </button>
-                            <button class="category-btn" data-category="accessories" title="Accessories" style="background: #fffdfb; color: #a4446e; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.75em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(164, 68, 110, 0.3); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <button class="category-btn" data-category="accessories" title="Accessories">
                                 ✨
                             </button>
                         </div>
                         
                         <!-- Filter Button - No icons, clean text -->
-                        <button id="toggle-filters" class="side-btn" style="position: absolute; left: 0; bottom: 0; background: #a4446e; color: white; border: none; border-radius: 8px; width: 80px; height: 30px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; display: flex; align-items: center; justify-content: center; text-decoration: none; transform: none;">
+                        <button id="toggle-filters" class="side-btn" style="position: absolute; left: 0; bottom: 0; background: var(--theme-primary); color: white; border: none; border-radius: 8px; width: 80px; height: 30px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; display: flex; align-items: center; justify-content: center; text-decoration: none; transform: none;">
                             Filters
                         </button>
                         
                         <!-- Finish Button - No icons, clean text -->
-                        <button id="finish-outfit" class="side-btn" style="position: absolute; right: 0; bottom: 0; background: #a4446e; color: white; border: none; border-radius: 8px; width: 80px; height: 30px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; display: flex; align-items: center; justify-content: center; text-decoration: none; transform: none;">
+                        <button id="finish-outfit" class="side-btn" style="position: absolute; right: 0; bottom: 0; background: var(--theme-primary); color: white; border: none; border-radius: 8px; width: 80px; height: 30px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; display: flex; align-items: center; justify-content: center; text-decoration: none; transform: none;">
                             Finish
                         </button>
                     </div>
                     
                     <!-- Filter Panel with Silhouette Filter -->
-                    <div id="filter-panel" style="background: white; border: 2px solid #e0ccd1; border-radius: 8px; z-index: 100; display: none; margin-bottom: 1em; padding: 1em; box-shadow: 0 4px 12px rgba(164, 68, 110, 0.3);">
+                    <div id="filter-panel" style="background: white; border: 2px solid #e0ccd1; border-radius: 8px; z-index: 100; display: none; margin-bottom: 1em; padding: 1em; box-shadow: 0 4px 12px var(--theme-primary-alpha);">
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1em;">
                             
                             <!-- Style Filter -->
                             <div>
-                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Style:</label>
+                                <label style="color: var(--theme-primary); font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Style:</label>
                                 <select id="style-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
                                     <option value="">All Styles</option>
                                     <option value="luxury">Luxury</option>
@@ -1087,7 +1115,7 @@ function injectWardrobeMainPanel() {
                             
                             <!-- Price Filter -->
                             <div>
-                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Price:</label>
+                                <label style="color: var(--theme-primary); font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Price:</label>
                                 <select id="price-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
                                     <option value="">All Prices</option>
                                     <option value="0-30">Under £30</option>
@@ -1099,7 +1127,7 @@ function injectWardrobeMainPanel() {
                             
                             <!-- Brand Filter -->
                             <div>
-                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Brand:</label>
+                                <label style="color: var(--theme-primary); font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Brand:</label>
                                 <select id="brand-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
                                     <option value="">All Brands</option>
                                     <option value="Delicate Dreams">Delicate Dreams</option>
@@ -1129,7 +1157,7 @@ function injectWardrobeMainPanel() {
                             
                             <!-- Silhouette Filter -->
                             <div>
-                                <label style="color: #a4446e; font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Silhouette:</label>
+                                <label style="color: var(--theme-primary); font-weight: bold; margin-bottom: 0.5em; display: block; font-size: 0.9em;">Silhouette:</label>
                                 <select id="silhouette-filter" style="width: 100%; padding: 0.4em; border: 1px solid #e0ccd1; border-radius: 4px; font-size: 0.8em;">
                                     <option value="">All Silhouettes</option>
                                     <option value="bralette">Bralette</option>
@@ -1169,7 +1197,7 @@ function injectWardrobeMainPanel() {
                             
                             <!-- Clear Filters -->
                             <div style="display: flex; align-items: end;">
-                                <button id="clear-filters" style="background: #d59ca6; color: white; border: none; border-radius: 4px; padding: 0.4em 0.8em; cursor: pointer; font-size: 0.8em; width: 100%;">
+                                <button id="clear-filters" style="background: var(--theme-secondary); color: white; border: none; border-radius: 4px; padding: 0.4em 0.8em; cursor: pointer; font-size: 0.8em; width: 100%;">
                                     Clear
                                 </button>
                             </div>
@@ -1262,9 +1290,9 @@ function setupAvatarControls() {
     // Hover effects for avatar controls
     $("#avatar-controls button").on("mouseenter", function() {
         console.log("🎮 Hover on button:", $(this).attr("id"));
-        $(this).css("background", "#d59ca6");
+        $(this).css("background", "var(--theme-secondary)");
     }).on("mouseleave", function() {
-        $(this).css("background", "#a4446e");
+        $(this).css("background", "var(--theme-primary)");
     });
     
     console.log("🎮 Avatar controls event handlers attached");
@@ -1291,12 +1319,12 @@ function setupWardrobeMainPanelControls() {
         
         // Update button states
         $(".category-btn").removeClass("active").css({
-            "background": "linear-gradient(135deg, #a4446e, #d59ca6)",
+            "background": "linear-gradient(135deg, var(--theme-primary), var(--theme-secondary))",
             "transform": "translateY(0) scale(1)"
         });
         
         $(this).addClass("active").css({
-            "background": "linear-gradient(135deg, #8b3a5e, #c18b96)",
+            "background": "linear-gradient(135deg, var(--theme-primary-dark), var(--theme-secondary-dark))",
             "transform": "translateY(-2px) scale(1.05)"
         });
         
@@ -1315,13 +1343,13 @@ function setupWardrobeMainPanelControls() {
         $(".clothing-item").removeClass("selected").css({
             "background": "white",
             "border-color": "#e0ccd1",
-            "color": "#3a3a3a"
+            "color": "var(--theme-text)"
         });
         
         $(this).addClass("selected").css({
-            "background": "linear-gradient(135deg, #d59ca6, #fceef5)",
-            "border-color": "#a4446e",
-            "color": "#a4446e",
+            "background": "linear-gradient(135deg, var(--theme-secondary), var(--theme-background))",
+            "border-color": "var(--theme-primary)",
+            "color": "var(--theme-primary)",
             "transform": "scale(1.02)"
         });
         
@@ -1370,27 +1398,27 @@ function setupWardrobeMainPanelControls() {
         // Visual feedback
         button.css({
             "transform": "scale(0.95)",
-            "background": "linear-gradient(135deg, #8b3a5e, #c18b96)"
+            "background": "linear-gradient(135deg, var(--theme-primary-dark), var(--theme-secondary-dark))"
         });
         
         setTimeout(() => {
             button.css({
                 "transform": "scale(1)",
-                "background": "linear-gradient(135deg, #a4446e, #d59ca6)"
+                "background": "linear-gradient(135deg, var(--theme-primary), var(--theme-secondary))"
             });
         }, 150);
         
         // Show success message
         const successMessage = `
             <div id="outfit-success" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                 background: linear-gradient(135deg, #d59ca6, #fceef5); 
-                 border: 3px solid #a4446e; border-radius: 12px; 
+                 background: linear-gradient(135deg, var(--theme-secondary), var(--theme-background)); 
+                 border: 3px solid var(--theme-primary); border-radius: 12px; 
                  padding: 2em; text-align: center; z-index: 2000;
                  box-shadow: 0 8px 24px rgba(164, 68, 110, 0.5);
                  animation: successPulse 0.5s ease-out;">
-                <h3 style="color: #a4446e; margin: 0 0 1em 0;">✨ Outfit Complete! ✨</h3>
+                <h3 style="color: var(--theme-primary); margin: 0 0 1em 0;">✨ Outfit Complete! ✨</h3>
                 <p style="color: #666; margin: 0 0 1.5em 0;">Your stylish look has been saved.</p>
-                <button id="close-success" style="background: #a4446e; color: white; border: none; border-radius: 6px; padding: 0.8em 1.5em; font-weight: bold; cursor: pointer;">
+                <button id="close-success" style="background: var(--theme-primary); color: white; border: none; border-radius: 6px; padding: 0.8em 1.5em; font-weight: bold; cursor: pointer;">
                     Perfect!
                 </button>
             </div>
@@ -1505,7 +1533,7 @@ function showClothingOptions(category) {
     if (category === "accessories") {
         let html = `
             <div style="text-align: center; margin: 2em 0;">
-                <h3 style="color: #a4446e; font-size: 2em; margin: 0;">
+                <h3 style="color: var(--theme-primary); font-size: 2em; margin: 0;">
                     ${categoryNames[category]}
                 </h3>
                 <p style="color: #666; font-size: 1.1em; margin: 0.5em 0 0 0;">Choose a subcategory</p>
@@ -1530,7 +1558,7 @@ function showClothingOptions(category) {
         accessorySubcategories.forEach(subcategory => {
             html += `
                 <button class="subcategory-btn" data-subcategory="${subcategory.id}" 
-                        style="background: white; border: 2px solid #e0ccd1; color: #a4446e; border-radius: 8px; 
+                        style="background: white; border: 2px solid #e0ccd1; color: var(--theme-primary); border-radius: 8px; 
                         padding: 1em; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease;
                         text-align: center;">
                     <div style="font-size: 2em; margin-bottom: 0.5em;">${subcategory.emoji}</div>
@@ -1554,7 +1582,7 @@ function showClothingOptions(category) {
     // Regular category display - clean with just header and clothing grid
     let html = `
         <div style="text-align: center; margin: 2em 0;">
-            <h3 style="color: #a4446e; font-size: 2em; margin: 0;">
+            <h3 style="color: var(--theme-primary); font-size: 2em; margin: 0;">
                 ${categoryNames[category]}
             </h3>
         </div>
@@ -1575,8 +1603,8 @@ function showClothingOptions(category) {
                      data-name="${item.name}" data-brand="${item.brand}" data-description="${item.description}"
                      data-style="${item.style}" data-price="${item.price}"
                      style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; 
-                     background: ${isSelected ? 'linear-gradient(135deg, #d59ca6, #fceef5)' : 'white'}; 
-                     border: 3px solid ${isSelected ? '#a4446e' : '#e0ccd1'}; 
+                     background: ${isSelected ? 'linear-gradient(135deg, var(--theme-secondary), var(--theme-background))' : 'white'}; 
+                     border: 3px solid ${isSelected ? 'var(--theme-primary)' : '#e0ccd1'}; 
                      border-radius: 12px; cursor: pointer; position: relative;
                      transition: all 0.3s ease; 
                      box-shadow: ${isSelected ? '0 4px 12px rgba(164, 68, 110, 0.4)' : '0 2px 8px rgba(224, 204, 209, 0.2)'};
@@ -1634,7 +1662,7 @@ function showClothingOptions(category) {
                      display: flex; 
                      align-items: center; 
                      padding: 1em;
-                     box-shadow: 0 -4px 12px rgba(164, 68, 110, 0.3);
+                     box-shadow: 0 -4px 12px var(--theme-primary-alpha);
                      animation: slideUpOverlay 0.3s ease-out;
                      box-sizing: border-box;">
                     
@@ -1647,8 +1675,8 @@ function showClothingOptions(category) {
                         </div>
                         
                         <div style="flex: 1; min-width: 0;">
-                            <h4 style="color: #a4446e; margin: 0 0 0.2em 0; font-size: 1.1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${itemName}</h4>
-                            <div style="color: #d59ca6; font-weight: bold; font-size: 0.9em; margin-bottom: 0.3em;">${itemBrand}</div>
+                            <h4 style="color: var(--theme-primary); margin: 0 0 0.2em 0; font-size: 1.1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${itemName}</h4>
+                            <div style="color: var(--theme-secondary); font-weight: bold; font-size: 0.9em; margin-bottom: 0.3em;">${itemBrand}</div>
                             <p style="color: #666; line-height: 1.2; margin: 0; font-size: 0.8em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${itemDescription}</p>
                         </div>
                     </div>
@@ -1679,7 +1707,7 @@ function showClothingOptions(category) {
         if (!$(this).hasClass("selected")) {
             $(this).css({
                 "transform": "translateY(-2px) scale(1.05)",
-                "box-shadow": "0 6px 16px rgba(164, 68, 110, 0.3)"
+                "box-shadow": "0 6px 16px var(--theme-primary-alpha)"
             });
         }
     }).on("mouseleave", function() {
@@ -1695,12 +1723,12 @@ function showClothingOptions(category) {
 function showAccessorySubcategory(subcategory) {
     const html = `
         <div style="text-align: center; padding: 3em;">
-            <h3 style="color: #a4446e; margin-bottom: 1em;">
+            <h3 style="color: var(--theme-primary); margin-bottom: 1em;">
                 ${subcategory.charAt(0).toUpperCase() + subcategory.slice(1)}
             </h3>
             <p style="color: #666;">Items for this subcategory coming soon...</p>
             <button onclick="showClothingOptions('accessories')" 
-                    style="margin-top: 1em; background: #a4446e; color: white; border: none; border-radius: 6px; padding: 0.5em 1em; cursor: pointer;">
+                    style="margin-top: 1em; background: var(--theme-primary); color: white; border: none; border-radius: 6px; padding: 0.5em 1em; cursor: pointer;">
                 ← Back to Accessories
             </button>
         </div>
